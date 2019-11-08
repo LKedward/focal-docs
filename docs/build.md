@@ -12,18 +12,19 @@ To use the Focal library, it must first be compiled for the target architecture.
 ## Build
 Navigate to the repository root and run make:
 
-```sh
-make -j
+```shell
+$> make -j
 ```
+
 
 If the linker fails to link `-lOpenCL`, you will have to specify the location of the openCL development library manually, e.g.:
 
-```sh
-make -j OPENCL_DIR="path/to/OpenCL/"
+```shell
+$> make -j OPENCL_DIR="path/to/OpenCL/"
 ```
 
 To build the example programs:
 
-```sh
-make -j examples
+```shell
+$> make -j examples
 ```

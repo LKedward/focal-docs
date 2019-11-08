@@ -1,6 +1,6 @@
 # Focal Documentation Site
 
-This site serves full documentation for the [Focal](https://github.com/LKedward/focal) project. Focal is a modern Fortran module library which wraps calls to the openCL runtime API (using [clfortran](https://github.com/cass-support/clfortran)) with a higher abstraction level appropriate to the Fortran language.
+Focal is a modern Fortran module library which wraps calls to the OpenCL runtime API (using [clfortran](https://github.com/cass-support/clfortran)) with a higher abstraction level appropriate to the Fortran language.
 
 __Project status:__ *Beta*
 
@@ -16,7 +16,7 @@ __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 
 
 ## A quick example
-The following fortran program calculates the sum of two large arrays using an openCL kernel.
+The following fortran program calculates the sum of two large arrays using an OpenCL kernel.
 
 ```fortran
 program sum

@@ -1,19 +1,21 @@
 # Managing memory
 
-## Initialise device memory
+See [setup](../setup) first for how to define a context and create a device command queue.
 
-Initialisation of device memory requires a dimension (number of elements) and booleans indicating the read/write access of kernels.
+## 1. Initialise device memory
+
+Initialisation of device memory requires a dimension (number of elements) and logicaleans indicating the read/write access of kernels.
 A command queue may optionally be specified, if omitted the the default command queue is used (`fclDefaultCommandQ`).
 
 
 __Interfaces__
 ```fortran
-<fclDeviceInt32> = fclBufferInt32(<fclCommandQ>,dimension,read,write)
-<fclDeviceInt32> = fclBufferInt32(dimension,read,write)
-<fclDeviceFloat> = fclBufferFloat(<fclCommandQ>,dimension,read,write)
-<fclDeviceFloat> = fclBufferFloat(dimension,read,write)
-<fclDeviceDouble> = fclBufferDouble(<fclCommandQ>,dimension,read,write)
-<fclDeviceDouble> = fclBufferDouble(dimension,read,write)
+<fclDeviceInt32> = fclBufferInt32(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceInt32> = fclBufferInt32(dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceFloat> = fclBufferFloat(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceFloat> = fclBufferFloat(dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceDouble> = fclBufferDouble(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceDouble> = fclBufferDouble(dim=<int>,read=<logical>,write=<logical>)
 ```
 
 __Example: read-only integer buffer with 1000 elements__
@@ -34,26 +36,58 @@ type(fclCmdQ) :: cmdq
 array_d = fclBufferDouble(cmdq,dim=1000,read=.true.,write=.true.)
 ```
 
-## Data transfer between device and host
+__API ref:__
+[fclBufferInt32](https://lkedward.github.io/focal-api/interface/fclbufferint32.html), 
+[fclBufferFloat](https://lkedward.github.io/focal-api/interface/fclbufferfloat.html), 
+[fclBufferDouble](https://lkedward.github.io/focal-api/interface/fclbufferdouble.html)
 
-Data transfer between a device buffer and a host array can be achieved with a simple assignment `=` operation.
-When transferring data, the host and device arrays must be of compatible types.
-Data transfers involving a host array are __blocking__ by default: host code does not continue until the transfer has completed.
+
+
+## 2 Fill device buffer with scalar 
+
+The assignment `=` operator can be used to fill an initialised device buffer with a scalar value.
 
 __Interfaces__
-
 ```fortran
 <fclDeviceInt32(n)>  = <integer>      ! host_scalar-to-device
 <fclDeviceFloat(n)>  = <float>
 <fclDeviceDouble(n)> = <double>
+```
 
+__Example__
+```fortran
+type(fclDeviceFloat) :: deviceFloat
+type(fclDevicDouble) :: deviceDouble
+...
+! Initialise device arrays
+deviceFloat = fclBufferFloat(Nelem,read=.true.,write=.true.)
+deviceDouble = fclBufferDouble(Nelem,read=.true.,write=.true.)
+
+! Fill arrays with zeros
+deviceFloat = 0.0
+deviceDouble = 0.0d0
+```
+
+!!! note
+    Since filling an array with a scalar value does not involve a host array pointer, it is __non-blocking__.
+    The scalar assignment is enqueued onto the device and host code continues. Call `fclWait(cmdq%lastWriteEvent)` to wait.
+
+__API ref:__
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html)
+
+## 3. Data transfer between device and host
+
+Data transfer between a device buffer and a host array can be achieved using the assignment `=` operation.
+When transferring data, the host and device arrays must be of compatible types.
+
+### 3.1 Transfer from host to device
+
+
+__Interfaces__
+```fortran
 <fclDeviceInt32(n)>  = <integer(n)>   ! Host-to-device
 <fclDeviceFloat(n)>  = <real32(n)>   
 <fclDeviceDouble(n)> = <real64(n)>
-
-<integer(n)> = <fclDeviceInt32(n)>    ! Device-to-host
-<real32(n)> = <fclDeviceFloat(n)>
-<real64(n)> = <fclDeviceDouble(n)>
 ```
 
 __Example__
@@ -69,17 +103,113 @@ deviceArray = fclBufferFloat(Nelem,read=.true.,write=.true.)
 deviceArray = hostArray
 ```
 
+!!! note
+    Since transferring arrays involves a host array pointer, it is __blocking__ by default.
+    Host code does not continue until transfer completes. Set `cmdq%blockingWrite = .false.` for asynchronous transfer.
+
+__API ref:__
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html)
+
+
+### 3.2 Transfer from device to host
+
+__Interfaces__
+```fortran
+<integer(n)> = <fclDeviceInt32(n)>    ! Device-to-host
+<real32(n)> = <fclDeviceFloat(n)>
+<real64(n)> = <fclDeviceDouble(n)>
+```
+
+!!! note
+    Since transferring arrays involves a host array pointer, it is __blocking__ by default.
+    Host code does not continue until transfer completes. Set `cmdq%blockingRead = .false.` for asynchronous transfer.
+
 __Example: Non-blocking data transfer__
 
-To perform non-blocking transfer, we set the Focal global parameter variables `fclBlockingWrite` and `fclBlockingRead` to `.false.` as required.
-To keep track of the transfer operations we can use the Focal global event variables `fclLastWriteEvent` and `fclLastReadEvent`.
+To perform non-blocking transfer, we set the command queue parameter variables `blockingWrite` and `blockingRead` to `.false.` as required.
+To keep track of the transfer operations we can use the command queue variables `lastWriteEvent` and `lastReadEvent` or the global variables `fclLastWriteEvent` and `fclLastReadEvent`.
 
 ```fortran
-type(c_ptr) :: e
+type(fclEvent) :: e
 ...
-fclBlockingWrite = .false.
-deviceArray = hostArray
-e = fclLastWriteEvent
+cmdq%blockingWrite = .false.    ! Enable non-blocking host-to-device transfers
+deviceArray = hostArray         ! Enqueue the transfer command
+e = cmdq%lastWriteEvent         ! Get transfer event object
 ...
-call fclWait(e)
+call fclWait(e)                 ! Wait for event when needed
 ```
+
+If using the default command queue then replace `cmdq` with `fclDefaultCmdQ`.
+
+__API ref:__
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html), 
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html), 
+[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
+
+
+## 4 Transfer device array to device array
+
+Device arrays and device array pointers can also be copied using the assignment `=` operator.
+
+__Interfaces__
+```fortran
+<fclDeviceInt32(n)> = <fclDeviceInt32(n)>    ! Device-to-device
+<fclDeviceFloat(n)> = <fclDeviceFloat(n)>
+<fclDeviceDouble(n)> = <fclDeviceDouble(n)>
+```
+
+If both the source object (right value) and target object (left value) are valid initialised device array objects,
+then the assignment operation will enqueue a __non-blocking__ device-to-device transfer.
+This event can be waited upon using `fclWait(cmdq%lastCopyEvent)`.
+
+If the target object (left value) is not initialised then the assignment operation will copy the pointer from the initialised source object (right value)
+such that both objects refer to the same device array.
+
+If the source object (right value) is not initialised then the assignment operation is invalid and throws a runtime error.
+
+__Example__
+
+```fortran
+type(fclDeviceInt32) :: deviceArray1
+type(fclDeviceInt32) :: deviceArray2
+...
+! Initialise device array 1
+deviceArray1 = fclBufferInt32(Nelem,read=.true.,write=.true.)
+
+deviceArray2 = deviceArray1
+! deviceArray2 and deviceArray1 now reference the same device buffer
+```
+
+__Example__
+
+```fortran
+type(fclDeviceInt32) :: deviceArray1
+type(fclDeviceInt32) :: deviceArray2
+...
+! Initialise both device arrays
+deviceArray1 = fclBufferInt32(Nelem,read=.true.,write=.true.)
+deviceArray2 = fclBufferInt32(Nelem,read=.true.,write=.true.)
+...
+deviceArray2 = deviceArray1
+call fclWait(fclLastCopyEvent)
+! Contents of deviceArray1 copied to deviceArray2
+```
+
+__API ref:__
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html), 
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html), 
+[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
+
+
+## 4 Free device memory
+
+Device memory is released using `fclFreeBuffer`.
+
+__Example__
+
+```fortran
+call fclFreeBuffer(deviceArray)
+```
+
+__API ref:__
+[fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)

@@ -14,5 +14,8 @@ nav:
     - linking.md
     - quickstart.md
 - User guide:
+    - setup.md
     - memory.md
+    - kernels.md
+    - events.md
 - API Reference: 'https://lkedward.github.io/focal-api'

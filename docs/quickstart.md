@@ -126,16 +126,3 @@ Again, `cmdq` can be omitted here if the default command queue has been set.
 
 Here we have passed two arguments to the kernel: the scalar integer `1000` and the device array `deviceArray`.
 
-### Kernel properties
-We can launch 2 and 3 dimensional work arrays by specifying the number of dimensions of the range and the dimension sizes:
-
-```fortran
-myKernel%dim = 2
-myKernel%global_work_size(1:2) = [1000, 5000]
-```
-
-We can also specify the dimensions of the local work groups:
-
-```fortran
-myKernel%local_work_size=[20, 50]
-```
