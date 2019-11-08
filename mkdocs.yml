@@ -1,0 +1,18 @@
+site_name: Focal Documentation
+theme:
+  name: mkdocs
+  highlightjs: true
+  hljs_languages:
+    - fortran
+    - shell
+markdown_extensions:
+  - admonition
+nav:
+- Home: 'index.md'
+- Getting started:
+    - build.md
+    - linking.md
+    - quickstart.md
+- User guide:
+    - memory.md
+- API Reference: 'https://lkedward.github.io/focal-api'
