@@ -26,7 +26,8 @@ to select a particular platform.
 
 __API ref:__
 [fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html), 
-[fclGetPlatforms](https://lkedward.github.io/focal-api/interface/fclgetplatforms.html)
+[fclGetPlatforms](https://lkedward.github.io/focal-api/interface/fclgetplatforms.html),
+[fclGetPlatformInfo](https://lkedward.github.io/focal-api/interface/fclgetplatforminfo.html)
 
 
 ## 2. Creating a context
@@ -125,8 +126,11 @@ devices => fclFindDevices(type='gpu',nameLike='tesla')
 
 From this list we can choose the first one or more devices as required.
 
+We can further query device properties using `fclGetDeviceInfo` (this requires inclusion of the `clfortran` module which defines values for the property `key` argument).
+
 __API ref:__
 [fclFindDevices](https://lkedward.github.io/focal-api/interface/fclfinddevices.html),
+[fclGetDeviceInfo](https://lkedward.github.io/focal-api/interface/fclgetdeviceinfo.html)
 [fclDevice](https://lkedward.github.io/focal-api/type/fcldevice.html)
 
 
