@@ -30,7 +30,7 @@ The second argument is a character string indicating in which Focal API call the
 
 The third argument is a character string indicating in which OpenCL API call the error code was produced.
 
-Having written an error handling subroutine `myErrorHandler` conforming to the above interface, you can enact it by overwriting the global pointer `fclErrorHandler`:
+Having written an error handling subroutine `myErrorHandler` conforming to the above interface, you can enact it using the global pointer `fclErrorHandler` at the beginning of your program:
 
 ```fortran
 fclErrorHandler => myErrorHandler

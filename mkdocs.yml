@@ -1,4 +1,5 @@
 site_name: Focal Documentation
+site_url: https://lkedward.github.io/focal-docs
 theme:
   name: mkdocs
   highlightjs: true

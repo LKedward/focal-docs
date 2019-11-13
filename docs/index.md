@@ -6,7 +6,6 @@ __Project status:__ *Beta*
 
 __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 
-!!! warning "Documentation still under construction"
 
 ## Getting started
 
