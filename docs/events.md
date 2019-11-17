@@ -9,11 +9,12 @@ To explicitly keep track of enqueued operations on the host, we can use event ob
 If an out-of-order command queue is used, then additional consideration must be made for inter-dependencies between the operations enqueued;
 this is enabled by command queue barriers and prerequisite events.
 
-## 1. Events and host synchronisation
 
-### 1.1 Event objects
+## 1. Event objects
 
-The following events are available following certain enqueing operations:
+Event objects represent operations that have been submitted to a command queue and provide a way of keeping track and specifying dependencies.
+
+The following event objects are made available following certain enqueing operations:
 
 | Action                               | Event Object                                   | Action Example                   |
 |--------------------------------------|------------------------------------------------|----------------------------------|
@@ -26,7 +27,11 @@ __API ref:__
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
 [fclLastWriteEvent, fclLastReadEvent, fclLastCopyEvent, fclLastKernelEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
 
-### 1.2 Waiting on the host
+
+
+
+
+## 2. Host synchronisation
 
 To wait on the host for device events to complete, use the `fclWait` command.
 This command has multiple interfaces defined below.
@@ -99,8 +104,23 @@ __API ref:__
 ## 3. Out-of-order execution and barriers
 
 If a device supports it, then a command queue can be created with __out-of-order execution__ enabled which allows it to dynamically schedule enqueued kernels for maximum device utilisation.
+
+__Example:__
+Create a command queue with out-of-order execution
+
+```fortran
+type(fclCommandQ) :: cmdq
+...
+cmdq = fclCreateCommandQ(devices(1),outOfOrderExec=.true.)
+```
+
 This means that kernels and enqueued data transfers are not guaranteed to start and finish execution in the order that they were enqueued.
 To control kernel and data dependencies in an out-of-order command queue, two mechanisms are available: barriers and prerequisite events.
+
+
+__API ref:__
+[fclCreateCommandQ](https://lkedward.github.io/focal-api/interface/fclcreatecommandq.html),
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html)
 
 ### 3.1 Command queue barriers
 
@@ -125,9 +145,33 @@ __API ref:__
 
 ### 3.2 Prerequisite events
 
-Prerequisite events are set prior to enqueueing an operation to specify events that must first complete for the following operation to start.
+Prerequisite events are set prior to enqueueing an operation to specify operations that must first complete for the following operation to start.
+Dependencies are only required for when using out-of-order command queues; in-order command queues (default) guarantee that commands are executed in the order that they were enqueued.
+The Focal command `fclSetDependency` is used to specify dependencies for the next enqueued operation.
 
-*Implementation under development*
+__Example:__
+A kernel event depends on previous data transfers 
+
+```fortran
+type(fclDeviceFloat) :: deviceArray1, deviceArray2
+type(fclKernel) :: myKernel
+type(fclEvent) :: e(2)
+...
+deviceArray1 = hostArray
+e(1) = fclLastWriteEvent         ! Save first write event
+deviceArray2 = hostArray
+e(2) = fclLastWriteEvent         ! Save second write event
+...
+call fclSetDependency(e)         ! Kernel launch depends on events in e
+myKernel%launch(deviceArray1, deviceArray2)
+```
+
+!!! note
+    Event dependencies are cleared after each enqueued operations.
+    Therefore event dependencies only apply to the next enqueued operation
+	not to subsequent ones. 
 
 
-
+__API ref:__
+[fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
+[fclClearDependencies](https://lkedward.github.io/focal-api/interface/fclcleardependencies.html)

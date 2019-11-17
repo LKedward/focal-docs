@@ -142,10 +142,12 @@ Command queues are created using the `fclCreateCommandQ` function.
 __Interface__
 
 ```fortran
+<fclCommandQ> = fclCreateCommandQ(<fclContext>,<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>)
 <fclCommandQ> = fclCreateCommandQ(<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>)
 ```
-
-Arguments `enableProfiling` and `outOfOrderExec` are optional.
+If no context is specified, then the default context is used.
+Arguments `enableProfiling` and `outOfOrderExec` are optional, both are disabled (`.false.`) by default;
+ profiling is disabled and command queue execution is __in-order__.
 
 __Example:__
 Create command queue on first device in `devices` list.

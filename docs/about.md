@@ -13,7 +13,9 @@ The Focal project is __Beta__ development:
 
 ToDo:
 
-* Prerequisite events (event-event dependencies)
+* Sub-buffer creation
+* Check event execution status
+* Allow multiple vendors to be specified in fclCreateContext
 * Test suite
 * Example codes
 

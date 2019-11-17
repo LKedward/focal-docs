@@ -16,6 +16,8 @@ Navigate to the repository root and run make:
 $> make -j
 ```
 
+Parallel compilation is fully supported, so use of `-j` flag is recommended.
+
 
 If the linker fails to link `-lOpenCL`, you will have to specify the location of the openCL development library manually, e.g.:
 
