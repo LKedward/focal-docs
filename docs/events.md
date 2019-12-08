@@ -18,7 +18,7 @@ The following event objects are made available following certain enqueing operat
 
 | Action                               | Event Object                                     | Action Example                   |
 |--------------------------------------|--------------------------------------------------|----------------------------------|
-| Transfer host array to device buffer | `fclLastWriteEvent`,<br>`cmdq%lastWriteEvent`    | `fortrandeviceArray = hostArray` |
+| Transfer host array to device buffer | `fclLastWriteEvent`,<br>`cmdq%lastWriteEvent`    | `deviceArray = hostArray` |
 | Transfer device buffer to host array | `fclLastReadEvent`<br>`cmdq%lastReadEvent`       | `hostArray = deviceArray`        |
 | Copy device buffer to device buffer  | `fclLastCopyEvent`<br>`cmdq%lastCopyEvent`       | `deviceArray2 = deviceArray1`    |
 | Launch kernel                        | `fclLastKernelEvent`<br>`cmdq%lastKernelEvent`   | `myKernel%launch()`              |
@@ -26,7 +26,7 @@ The following event objects are made available following certain enqueing operat
 
 __API ref:__
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
-[fclLastWriteEvent, fclLastReadEvent, fclLastCopyEvent, fclLastKernelEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
+[fclLastWriteEvent, fclLastReadEvent, fclLastCopyEvent, fclLastKernelEvent, fclLastBarrierEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
 
 
 
@@ -73,7 +73,7 @@ type(fclEvent) :: e
 myKernel%launch()          ! Launch kernel
 e = fclLastKernelEvent     ! Save kernel event object
 ...                        ! Perform other operations
-call fclWait(e)            ! Now wait for kernel to complete 
+call fclWait(e)            ! Now wait for kernel to complete
 ```
 
 __Example:__
@@ -93,7 +93,7 @@ e(2) = cmdq%lastWriteEvent     ! Save second transfer event
 a3 = hostArray3                ! Enqueue third transfer
 e(3) = cmdq%lastWriteEvent     ! Save third transfer event
 ...                            ! Perform other operations
-call fclWait(e)                ! Now wait for transfers to complete 
+call fclWait(e)                ! Now wait for transfers to complete
 ```
 
 __API ref:__
@@ -116,7 +116,7 @@ cmdq = fclCreateCommandQ(devices(1),outOfOrderExec=.true.)
 ```
 
 This means that kernels and enqueued data transfers are not guaranteed to start and finish execution in the order that they were enqueued.
-To control kernel and data dependencies in an out-of-order command queue, two mechanisms are available: barriers and prerequisite events.
+To control kernel and data dependencies in an out-of-order command queue, two mechanisms are available: barriers and event dependencies.
 
 
 __API ref:__
@@ -131,7 +131,7 @@ Dependencies are only required for when using out-of-order command queues; in-or
 The Focal command `fclSetDependency` is used to specify dependencies for the next enqueued operation.
 
 __Example:__
-A kernel event depends on previous data transfers 
+A kernel event depends on previous data transfers
 
 ```fortran
 type(fclDeviceFloat) :: deviceArray1, deviceArray2
@@ -150,7 +150,7 @@ myKernel%launch(deviceArray1, deviceArray2)
 !!! note
     Event dependencies are cleared after each enqueued operations.
     Therefore event dependencies only apply to the next enqueued operation
-	not to subsequent ones. 
+	not to subsequent ones.
 
 
 __API ref:__
@@ -204,7 +204,7 @@ call fclSetDependency(cmdq%fclLastBarrierEvent)
 ```
 
 __API ref:__
-[fclBarrier](https://lkedward.github.io/focal-api/interface/fclbarrier.html), 
+[fclBarrier](https://lkedward.github.io/focal-api/interface/fclbarrier.html),
 [fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html),
 [fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
