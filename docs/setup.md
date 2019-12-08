@@ -142,12 +142,19 @@ Command queues are created using the `fclCreateCommandQ` function.
 __Interface__
 
 ```fortran
-<fclCommandQ> = fclCreateCommandQ(<fclContext>,<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>)
-<fclCommandQ> = fclCreateCommandQ(<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>)
+<fclCommandQ> = fclCreateCommandQ(<fclContext>,<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>, &
+                                     blockingWrite=<logical>,blockingRead=<logical>)
+<fclCommandQ> = fclCreateCommandQ(<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>, &
+                                     blockingWrite=<logical>,blockingRead=<logical>)
 ```
 If no context is specified, then the default context is used.
-Arguments `enableProfiling` and `outOfOrderExec` are optional, both are disabled (`.false.`) by default;
+
+Arguments `enableProfiling`, `outOfOrderExec`, `blockingWrite` and `blockingRead` are optional.
+
+`enableProfiling`, `outOfOrderExec` are disabled (`.false.`) by default;
  profiling is disabled and command queue execution is __in-order__.
+
+ `blockingWrite` and `blockingRead` are enabled (`.true.`) by default: host array transfers will block on the host.
 
 __Example:__
 Create command queue on first device in `devices` list.
