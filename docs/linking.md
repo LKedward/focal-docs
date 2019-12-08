@@ -1,5 +1,5 @@
 # Linking Focal Programs
- 
+
 ## Include
 To use the Focal module in your own code, include the module with the `use` syntax:
 
@@ -33,3 +33,11 @@ $> gfortran myprogram.f90 -L/path/to/focal/lib/ -lfocal -L/path/to/OpenCL/lib/ -
 ```
 
 See examples in the repository for how this can be done with a `makefile`.
+
+
+## Debug build
+When the Focal library is built, two versions are produced: `libfocal` and `libfocaldbg` where the latter
+contains additional runtime calls that check the validity of your program.
+
+To link against the debug build replace `-lfocal` with `-lfocaldbg` in the linking command.
+See [here](../errors#2-runtime-debug-checks) for more information on runtime debug checks.
