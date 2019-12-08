@@ -37,13 +37,13 @@ array_d = fclBufferDouble(cmdq,dim=1000,read=.true.,write=.true.)
 ```
 
 __API ref:__
-[fclBufferInt32](https://lkedward.github.io/focal-api/interface/fclbufferint32.html), 
-[fclBufferFloat](https://lkedward.github.io/focal-api/interface/fclbufferfloat.html), 
+[fclBufferInt32](https://lkedward.github.io/focal-api/interface/fclbufferint32.html),
+[fclBufferFloat](https://lkedward.github.io/focal-api/interface/fclbufferfloat.html),
 [fclBufferDouble](https://lkedward.github.io/focal-api/interface/fclbufferdouble.html)
 
 
 
-## 2 Fill device buffer with scalar 
+## 2. Fill device buffer with scalar 
 
 The assignment `=` operator can be used to fill an initialised device buffer with a scalar value.
 
@@ -142,12 +142,12 @@ call fclWait(e)                 ! Wait for event when needed
 If using the default command queue then replace `cmdq` with `fclDefaultCmdQ`.
 
 __API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html), 
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html), 
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html),
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
 [fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
 
 
-## 4 Transfer device array to device array
+## 4. Transfer device array to device array
 
 Device arrays and device array pointers can also be copied using the assignment `=` operator.
 
@@ -196,12 +196,12 @@ call fclWait(fclLastCopyEvent)
 ```
 
 __API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html), 
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html), 
+[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html),
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
 [fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
 
 
-## 4 Free device memory
+## 5. Free device memory
 
 Device memory is released using `fclFreeBuffer`.
 
