@@ -7,7 +7,7 @@ Implicit host-device synchronisations can occur if blocking data transfers are u
 To explicitly keep track of enqueued operations on the host, we can use event objects issued with each command.
 
 If an out-of-order command queue is used, then additional consideration must be made for inter-dependencies between the operations enqueued;
-this is enabled by command queue barriers and prerequisite events.
+this is enabled by command queue barriers and dependencies.
 
 
 ## 1. Event objects
@@ -16,12 +16,13 @@ Event objects represent operations that have been submitted to a command queue a
 
 The following event objects are made available following certain enqueing operations:
 
-| Action                               | Event Object                                   | Action Example                   |
-|--------------------------------------|------------------------------------------------|----------------------------------|
-| Transfer host array to device buffer | `fclLastWriteEvent`,<br>`cmdq%lastWriteEvent`  | `fortrandeviceArray = hostArray` |
-| Transfer device buffer to host array | `fclLastReadEvent`<br>`cmdq%lastReadEvent`     | `hostArray = deviceArray`        |
-| Copy device buffer to device buffer  | `fclLastCopyEvent`<br>`cmdq%lastCopyEvent`     | `deviceArray2 = deviceArray1`    |
-| Launch kernel                        | `fclLastKernelEvent`<br>`cmdq%lastKernelEvent` | `myKernel%launch()`              |
+| Action                               | Event Object                                     | Action Example                   |
+|--------------------------------------|--------------------------------------------------|----------------------------------|
+| Transfer host array to device buffer | `fclLastWriteEvent`,<br>`cmdq%lastWriteEvent`    | `fortrandeviceArray = hostArray` |
+| Transfer device buffer to host array | `fclLastReadEvent`<br>`cmdq%lastReadEvent`       | `hostArray = deviceArray`        |
+| Copy device buffer to device buffer  | `fclLastCopyEvent`<br>`cmdq%lastCopyEvent`       | `deviceArray2 = deviceArray1`    |
+| Launch kernel                        | `fclLastKernelEvent`<br>`cmdq%lastKernelEvent`   | `myKernel%launch()`              |
+| Enqueue queue barrier                | `fclLastBarrierEvent`<br>`cmdq%lastBarrierEvent` | `call fclBarrier(...)`           |
 
 __API ref:__
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
@@ -122,30 +123,10 @@ __API ref:__
 [fclCreateCommandQ](https://lkedward.github.io/focal-api/interface/fclcreatecommandq.html),
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html)
 
-### 3.1 Command queue barriers
 
-OpenCL barriers break up the command queue into regions between which there can be no re-orderig of operations.
-If a series of operations (group A) is followed by a barrier then followed by another series of operations (group A), then all events from group a must be complete (in any order) before any event in group B can start.
+### 3.1 Event dependencies
 
-To enqueue a barrier in Focal, use `fclBarrier`:
-
-__Interfaces__
-
-```fortran
-call fclBarrier()
-call fclBarrier(<fclCommandQ>)
-```
-
-When called with no arguments, this enqueues a barrier onto the __default command queue__.
-Otherwise, it enqueues a barrier onto the command queue specified in the first argument.
-
-__API ref:__
-[fclBarrier](https://lkedward.github.io/focal-api/interface/fclbarrier.html)
-
-
-### 3.2 Prerequisite events
-
-Prerequisite events are set prior to enqueueing an operation to specify operations that must first complete for the following operation to start.
+Event dependencies are set prior to enqueueing an operation to specify operations that must first complete for the following operation to start.
 Dependencies are only required for when using out-of-order command queues; in-order command queues (default) guarantee that commands are executed in the order that they were enqueued.
 The Focal command `fclSetDependency` is used to specify dependencies for the next enqueued operation.
 
@@ -175,3 +156,56 @@ myKernel%launch(deviceArray1, deviceArray2)
 __API ref:__
 [fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
 [fclClearDependencies](https://lkedward.github.io/focal-api/interface/fclcleardependencies.html)
+
+
+### 3.2 Command queue barriers
+
+OpenCL barriers break up the command queue into regions between which there can be no re-orderig of operations.
+If a series of operations (group A) is followed by a barrier then followed by another series of operations (group A), then all events from group a must be complete (in any order) before any event in group B can start.
+
+To enqueue a barrier in Focal, use `fclBarrier`:
+
+__Interfaces__
+
+```fortran
+call fclBarrier()
+call fclBarrier(<fclCommandQ>)
+```
+
+When called with no arguments, this enqueues a barrier onto the __default command queue__.
+Otherwise, it enqueues a barrier onto the command queue specified in the first argument.
+
+The barrier can be waiting upon or set as a dependency using the event objects: `fclLastBarrierEvent` or `cmdq%lastBarrierEvent`;
+this is useful in referencing groups of events.
+
+__Example:__
+Wait on a group of asynchronous transfers to complete
+
+```fortran
+type(fclCommandQ) :: cmdq
+type(fclDeviceFloat) :: a, b, c
+...
+cmdq = fclCreateCommandQ(devices(1),outOfOrderExec=.true.,blockingWrite=.false.)
+...
+! Enqueue asynchronous transfers to device
+a = hostA   
+b = hostB
+c = hostC
+
+! Enqueue barrier
+call fclBarrier(cmdq)
+...
+! Wait for all transfers to complete
+call fclWait(cmdq%lastBarrierEvent)
+...
+! OR set a dependency for all transfers to complete
+call fclSetDependency(cmdq%fclLastBarrierEvent)
+...
+```
+
+__API ref:__
+[fclBarrier](https://lkedward.github.io/focal-api/interface/fclbarrier.html), 
+[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html),
+[fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
+[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
+[fclLastBarrierEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
