@@ -9,9 +9,9 @@ The aims for Focal in particular are to:
 - provide some level of type-safety through the use of typed buffer objects;
 - decrease the verbosity of the API calls while still providing the same functionality;
 - abstract away low-level details, such as buffer size in bytes, not appropriate to Fortran;
-- make it easier to write and debug OpenCL programs.
+- make it easier to write, debug and profile OpenCL programs.
 
-Focal officially supports OpenCL v1.2 features.
+Focal supports a subset of OpenCL v1.2 features.
 
 ## Project status
 
@@ -21,18 +21,22 @@ The Focal project is __Beta__ development:
 
 ToDo:
 
+* User events
 * Sub-buffer creation
+* Profiling output to chrome://tracing json format
 * Allow multiple vendors to be specified in fclCreateContext
 * Test suite
-* Example codes
+* CMake build
+* Quick reference card
 
 ## See also
 
 * [Khronos group](https://www.khronos.org/opencl/)
+* [International workshop on OpenCL](https://www.iwocl.org/)
 * [OpenCL specification](https://www.khronos.org/registry/OpenCL/specs/opencl-1.2.pdf)
 * [Hands on OpenCL](https://handsonopencl.github.io/) (Complete course with code examples)
 * [clfortran project](https://github.com/cass-support/clfortran) (Fortran interface header library)
 * [NVIDIA OpenCL Best Practices](https://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf)
 * [NVIDIA OpenCL programming](https://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf)
-* [Intetl OpenCl optimization guide for intel graphics](https://software.intel.com/en-us/iocl-opg)
+* [Intel OpenCl optimization guide for intel graphics](https://software.intel.com/en-us/iocl-opg)
 * [AMD OpenCL guide](https://rocm-documentation.readthedocs.io/en/latest/Programming_Guides/Opencl-programming-guide.html)
