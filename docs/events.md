@@ -148,9 +148,27 @@ myKernel%launch(deviceArray1, deviceArray2)
 ```
 
 !!! note
-    Event dependencies are cleared after each enqueued operations.
-    Therefore event dependencies only apply to the next enqueued operation
-	not to subsequent ones.
+    Unless `hold=.true.` is specified in `fclSetDependency` then, dependencies are cleared after each enqueued operations.
+    *i.e.* event dependencies will only apply to the next enqueued operation
+	  not to subsequent ones. See example below for multiple events sharing the same dependency.
+
+__Example:__
+Apply the same event dependencies to multiple subsequent commands
+
+```fortran
+type(fclKernel) :: myKernel
+type(fclEvent) :: e
+...
+myKernel%launch()
+e = fclLastKernelEvent
+...
+call fclSetDependency(e,hold=.true.) ! Data transfers all depend on previous kernel launch
+hostData1 = deviceData1
+hostData2 = deviceData2
+hostData3 = deviceData3
+call fclClearDependencies()          ! Clear held dependencies
+
+```
 
 
 __API ref:__
