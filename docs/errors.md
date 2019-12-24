@@ -67,6 +67,11 @@ subroutine fclDefaultErrorHandler(errcode,focalCall,oclCall)
 end subroutine fclDefaultErrorHandler
 ```
 
+__API ref:__
+[fclGetErrorString](https://lkedward.github.io/focal-api/interface/fclgeterrorstring.html),
+[fclErrorHandlerInterface](https://lkedward.github.io/focal-api/interface/fclerrorhandlerinterface.html),
+[fclDefaultErrorHandler](https://lkedward.github.io/focal-api/interface/fcldefaulterrorhandler.html),
+[fclErrorHandler](https://lkedward.github.io/focal-api/module/focal.html#variable-fclerrorhandler)
 
 ## 2. Runtime debug checks
 
@@ -86,19 +91,16 @@ when performing memory operations.
 - __Size of device buffers:__ checks that the size of device buffers is valid when
 performing memory operations such as write, read, and copy.
 
+- __Kernel event execution status:__ waits after each kernel launch and checks for error status.
+This is important for ensuring kernels are executing correctly.
+If an error code is detected, it is printed before aborting the program.
+
+!!! note
+    Since each kernel launch is wait upon and status-checked in the debug build, then kernel launches
+    become __blocking__ operations. Kernel launches are unaffected (non-blocking) in the normal build.
+
 When a runtime error is detected the program is aborted immediately such that a stack trace is printed,
 and which can be used to detect the source of the error.
 
-### 2.1 Debug check for kernel execution status
-
-A debug library subroutine is made available for library users called `fclDbgWait(<fclEvent>)`.
-This routine waits for the specified event to complete before checking the event execution status
-for error codes. If an error code is detected, it is printed before aborting the program.
-
-This command is particularly useful for calling after kernel launches to check that kernels
-are terminating correctly.
-
-!!! note
-    Commands beginning with `fclDbg` are only executed when linking against the
-    debug version of focal (`-lfocaldbg`). When linking against the normal version (`-lfocal`)
-    these commands are empty function calls and hence do nothing.
+__API ref:__
+[fclDbgWait](https://lkedward.github.io/focal-api/interface/fcldbgwait.html)
