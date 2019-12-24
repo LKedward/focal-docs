@@ -10,13 +10,24 @@ A command queue may optionally be specified, if omitted the the default command 
 
 __Interfaces__
 ```fortran
-<fclDeviceInt32> = fclBufferInt32(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
-<fclDeviceInt32> = fclBufferInt32(dim=<int>,read=<logical>,write=<logical>)
-<fclDeviceFloat> = fclBufferFloat(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
-<fclDeviceFloat> = fclBufferFloat(dim=<int>,read=<logical>,write=<logical>)
-<fclDeviceDouble> = fclBufferDouble(<fclCommandQ>,dim=<int>,read=<logical>,write=<logical>)
-<fclDeviceDouble> = fclBufferDouble(dim=<int>,read=<logical>,write=<logical>)
+<fclDeviceInt32> = fclBufferInt32([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
+<fclDeviceFloat> = fclBufferFloat([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
+<fclDeviceDouble> = fclBufferDouble([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
 ```
+
+- `cmdQ` (*optional*) specifies the command queue to which this buffer is associated.
+All buffer operations will occur on this command queue. `cmdQ` can be omitted if the default command queue has been set.
+
+- `dim` specifies the number of elements for which to allocate the buffer.
+
+- `read` specifies whether kernels can read from this buffer
+
+- `write` specifies whether kernels can write to this buffer
+
+- `profileSize` (*optional*) specifies the number of data transfer events to 'record' for profiling.
+Default 0 (profiling disabled). See [profiling](../profiling).
+
+- `profileName` (*optional*) descriptive name when printing profiling information. See [profiling](../profiling).
 
 __Example: read-only integer buffer with 1000 elements__
 
@@ -43,7 +54,7 @@ __API ref:__
 
 
 
-## 2. Fill device buffer with scalar 
+## 2. Fill device buffer with scalar
 
 The assignment `=` operator can be used to fill an initialised device buffer with a scalar value.
 
@@ -213,3 +224,24 @@ call fclFreeBuffer(deviceArray)
 
 __API ref:__
 [fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)
+
+
+## 6. Swap buffer pointers
+
+Device buffer pointers can be swapped on the host using `fclBufferSwap`.
+This can be more efficient than performing a device-to-device copy.
+
+__Example__
+
+```fortran
+integer :: i
+type(fclKernel) :: myKernel
+type(fclDeviceFloat) :: a1_d, a2_d
+...
+do i=1,10
+  call myKernel%launch(a1_d)
+  ...
+  call fclBufferSwap(a1_d,a2_d)
+end do
+
+```

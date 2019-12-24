@@ -19,6 +19,7 @@ nav:
     - memory.md
     - kernels.md
     - events.md
+    - profiling.md
     - errors.md
 - About:
     - about.md

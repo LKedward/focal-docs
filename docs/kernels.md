@@ -4,7 +4,7 @@ See [setup](../setup) and [memory](../memory) first for how to setup contexts, c
 
 ## 1. Loading kernel sources
 
-OpenCL kernels are almost always shipped as plain text sources which are compiled at runtime for the required architecture; 
+OpenCL kernels are almost always shipped as plain text sources which are compiled at runtime for the required architecture;
 this allows perfect portability of programs using OpenCL kernels.
 
 Focal provides two utility routines for obtaining OpenCL kernel source code at runtime:
@@ -72,8 +72,6 @@ __API ref:__
 
 Once kernel source code has been loaded into a character string (`character(len=n)`), the code can be compiled using `fclCompileProgram`.
 An OpenCL 'program' simply refers to a collection of kernels. So we can collect all our kernels into a single character string and compile them together.
-Once compiled, a specific Focal kernel object can be extracted from the compiled program object using `fclGetProgramKernel`.
-This returns an `fclKernel` object which we can use to launch a specific kernel.
 
 __Interfaces__
 
@@ -81,13 +79,35 @@ __Interfaces__
 <fclProgram> = fclCompileProgram(ctx=<fclContext>,source=<character(len=n)>,options=<character(len=n)>)
 ```
 
+- If the default context has been set then `ctx` can be omitted.
+
+- The `options` argument is optional and specifies [OpenCL compilation options](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clBuildProgram.html#notes).
+
+Once compiled, a specific Focal kernel object can be extracted from the compiled program object using `fclGetProgramKernel`.
+This returns an `fclKernel` object which we can use to launch a specific kernel.
+
+__Interfaces__
+
 ```fortran
-<fclKernel> = fclGetProgramKernel(<fclProgram>,kernelName=<character(len=n)>)
+<fclKernel> = fclGetProgramKernel(<fclProgram>,kernelName=<character(len=n)>,[global_work_size],[local_work_size], &
+                                             [work_dim],[global_work_offset],[profileSize])
 ```
 
-If the default context has been set then `ctx` can be omitted.
+- `global_work_size` (*optional*) integer array (up to length 3) specifying global work dimensions. Default unset.
+Automatically sets `work_dim` to the length of `global_work_size`.
 
-The `options` argument is optional and specifies [OpenCL compilation options](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clBuildProgram.html#notes).
+- `local_work_size` (*optional*) integer array (up to length 3) specifying local work group dimensions.
+Default [0,0,0] where OpenCL sets the local work dimensions.
+
+- `work_dim` (*optional*) integer specifying number of work group dimensions.
+Default 1 or length of `global_work_size` if specified.
+
+- `global_work_offset` (*optional*) integer array specifying global work offsets in each dimension, default [0,0,0]
+
+- `profileSize` (*optional*) integer specifying number of kernel events to 'record' for profiling information.
+Default 0 (profiling disabled). See [profiling](../profiling).
+
+
 
 __Example__
 
@@ -134,11 +154,15 @@ myKernel%launch(nElem,deviceArray)
 
 !!! note
     OpenCL kernel arguments persist between calls, therefore subsequent kernel launch calls can omit arguments if unchanged.
+    Use `fclSetKernelArg` and `fclSetKernelArgs` to change a single/multiple kernel argument(s) between kernel launches.
 
 
 __API ref:__
-[fclKernel](https://lkedward.github.io/focal-api/type/fclkernel.html), 
-[fclLaunchKernel](https://lkedward.github.io/focal-api/interface/fcllaunchkernel.html)
+[fclKernel](https://lkedward.github.io/focal-api/type/fclkernel.html),
+[fclLaunchKernel](https://lkedward.github.io/focal-api/interface/fcllaunchkernel.html),
+[fclLaunchKernelAfter](https://lkedward.github.io/focal-api/interface/fcllaunchkernelafter.html)
+[fclSetKernelArg](https://lkedward.github.io/focal-api/interface/fclsetkernelarg.html),
+[fclSetKernelArgs](https://lkedward.github.io/focal-api/interface/fclsetkernelargs.html)
 
 ### 3.1 Kernel dimensions
 We can launch 2 and 3 dimensional work arrays by specifying the number of dimensions of the range, and the dimension sizes:
@@ -187,4 +211,3 @@ __API ref:__
 [fclLocalFloat](https://lkedward.github.io/focal-api/interface/fcllocalfloat.html),
 [fclLocalDouble](https://lkedward.github.io/focal-api/interface/fcllocaldouble.html),
 [fclLocalArgument](https://lkedward.github.io/focal-api/type/fcllocalargument.html),
-
