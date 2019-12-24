@@ -24,9 +24,9 @@ call fclSetDefaultContext( fclCreateContext(vendor='nvidia') )
 We can query devices based on their properties and return a list of them using `fclFindDevices'
 
 ```fortran
-type(fclDevice), pointer :: devices(:)
+type(fclDevice), allocatable :: devices(:)
 ...
-devices => fclFindDevices(ctx,type='gpu',nameLike='tesla',sortBy='cores')
+devices = fclFindDevices(ctx,type='gpu',nameLike='tesla',sortBy='cores')
 ```
 `ctx` can be omitted here if the default context has been set.
 
@@ -125,4 +125,3 @@ call myKernel%launch(cmdq,1000,deviceArray)
 Again, `cmdq` can be omitted here if the default command queue has been set.
 
 Here we have passed two arguments to the kernel: the scalar integer `1000` and the device array `deviceArray`.
-

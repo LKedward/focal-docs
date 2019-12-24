@@ -25,7 +25,7 @@ The Focal platform object contains fields such as `name`, `vendor`, `version`, a
 to select a particular platform.
 
 __API ref:__
-[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html), 
+[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html),
 [fclGetPlatforms](https://lkedward.github.io/focal-api/interface/fclgetplatforms.html),
 [fclGetPlatformInfo](https://lkedward.github.io/focal-api/interface/fclgetplatforminfo.html)
 
@@ -36,10 +36,10 @@ __API ref:__
 Having queried available platforms as above, we can create an Focal context object using `fclCreateContext`:
 
 ```fortran
-type(fclPlatform), pointer :: platforms(:)
+type(fclPlatform), allocatable :: platforms(:)
 type(fclContext) :: ctx
 ...
-platforms => fclGetPlatforms()
+platforms = fclGetPlatforms()
 ctx = fclCreateContext(platforms(i))
 ```
 
@@ -78,25 +78,25 @@ __Example: with explicit context variable__
 
 ```fortran
 type(fclContext) :: ctx
-type(fclDevice), pointer :: devices(:)
+type(fclDevice), allocatable :: devices(:)
 ...
 ctx = fclCreateContext(vendor='nvidia')
-devices => fclFindDevices(ctx,type='gpu')
+devices = fclFindDevices(ctx,type='gpu')
 ```
 
 __Example: with default context__
 
 ```fortran
-type(fclDevice), pointer :: devices(:)
+type(fclDevice), allocatable :: devices(:)
 ...
 call fclSetDefaultContext( fclCreateContext(vendor='nvidia') )
-devices => fclFindDevices(type='gpu')
+devices = fclFindDevices(type='gpu')
 ```
 
 
 __API ref:__
-[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html), 
-[fclSetDefaultContext](https://lkedward.github.io/focal-api/interface/fclsetdefaultcontext.html), 
+[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html),
+[fclSetDefaultContext](https://lkedward.github.io/focal-api/interface/fclsetdefaultcontext.html),
 [fclDefaultCtx](https://lkedward.github.io/focal-api/module/focal.html#variable-fcldefaultctx)
 
 
@@ -110,18 +110,18 @@ List CPUs in context `ctx` sorted (descending) by number of cores:
 
 ```fortran
 type(fclContext) :: ctx
-type(fclDevice), pointer :: devices(:)
+type(fclDevice), allocatable :: devices(:)
 ...
-devices => fclFindDevices(ctx,type='cpu',sortBy='cores')
+devices = fclFindDevices(ctx,type='cpu',sortBy='cores')
 ```
 
 __Example:__
 List GPUs in the default context where the name contains 'tesla' (case insensitive):
 
 ```fortran
-type(fcLDevice), pointer :: devices(:)
+type(fcLDevice), allocatable :: devices(:)
 ...
-devices => fclFindDevices(type='gpu',nameLike='tesla')
+devices = fclFindDevices(type='gpu',nameLike='tesla')
 ```
 
 From this list we can choose the first one or more devices as required.
