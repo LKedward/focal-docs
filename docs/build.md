@@ -14,8 +14,10 @@ The Focal library is built and tested regularly on RHEL, Ubuntu and Windows usin
 Navigate to the repository root and run make:
 
 ```shell
-$> make
+$> make -j
 ```
+
+Parallel build is fully supported by the makefile, so use of the `-j` flag is recommended.
 
 If the linker fails to link `-lOpenCL`, you will have to specify the location of the OpenCL development library manually, e.g.:
 
