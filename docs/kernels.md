@@ -44,7 +44,7 @@ At the command line we use the linker `ld` to convert the kernel text file `fclK
 $> ld -r -b binary fclKernels.cl -o fclKernels.o
 ```
 
-In the call to `ld` the file containing the kernels text can have any arbitrary name, however the resulting binary object __MUST be called `fclKernels.o` with no path prefix__.
+In the call to `ld` the output binary file can have any arbitrary name, however the input file, containing the kernels source text, __MUST be called `fclKernels.cl` with no path prefix__.
 
 __Step 2:__
 Compile and link the main program with the `fclKernels.o` resource object:
@@ -63,7 +63,7 @@ character(:), allocatable :: programSource
 call fclGetKernelResource(programSource)
 ```
 
-See examples in the repository for how this can be done with a makefile.
+See the examples [makefile](https://github.com/LKedward/focal/blob/master/examples/makefile) in the repository for how this can be done during the build process.
 
 __API ref:__
 [fclGetKernelResource](https://lkedward.github.io/focal-api/interface/fclgetkernelresource.html)
