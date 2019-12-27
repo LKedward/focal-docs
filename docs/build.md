@@ -1,7 +1,7 @@
 # Building the Focal Library
 To use the Focal library, it must first be compiled for the target architecture.
 
-The Focal library is built and tested regularly on RHEL, Ubuntu and Windows using MinGW under [MSYS2](https://www.math.ucla.edu/~wotaoyin/windows_coding.html).
+The Focal library is built and tested regularly with gfortran on RHEL, Ubuntu and Windows (using MinGW under [MSYS2](https://www.math.ucla.edu/~wotaoyin/windows_coding.html)).
 
 ## Prerequisies
 - Fortran compiler supporting the 2008 standard (tested with gfortran and ifort)
@@ -28,7 +28,7 @@ $> make -j OPENCL_DIR="path/to/OpenCL/"
 To build the example programs:
 
 ```shell
-$> make -j examples
+$> make examples
 ```
 
 which will place example binaries in `$(FOCAL_DIR)/bin/`.
