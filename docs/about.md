@@ -23,9 +23,7 @@ ToDo:
 
 * User events
 * Sub-buffer creation
-* Profiling output to chrome://tracing json format
-* Allow multiple vendors to be specified in fclCreateContext
-* Test suite
+* Pinned memory allocation on host
 * CMake build
 * Quick reference card
 

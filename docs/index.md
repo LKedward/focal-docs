@@ -18,7 +18,7 @@ __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 * [Building the Focal Library](build)
 * [Using and linking Focal](linking)
 * [Quickstart programming guide](quickstart)
-
+* [Example programs](https://github.com/LKedward/focal/tree/master/examples)
 
 ## A quick example
 The following fortran program calculates the sum of two large arrays using an OpenCL kernel.

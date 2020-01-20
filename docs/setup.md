@@ -61,6 +61,14 @@ ctx = fclCreateContext(vendor='nvidia')
 
 Here we have requested a context be created on the first platform where the vendor string contains 'nvidia' (case insensitive).
 
+We can also specify a comma-delimited list of vendors in order of preference; if the first vendor is not available, subsequent vendors can be specified:
+
+```fortran
+type(fclContext) :: ctx
+...
+ctx = fclCreateContext(vendor='nvidia,amd,intel')
+```
+
 __API ref:__
 [fclCreateContext](https://lkedward.github.io/focal-api/interface/fclcreatecontext.html)
 

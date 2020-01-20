@@ -90,7 +90,7 @@ __Interfaces__
 
 ```fortran
 <fclKernel> = fclGetProgramKernel(<fclProgram>,kernelName=<character(len=n)>,[global_work_size],[local_work_size], &
-                                             [work_dim],[global_work_offset],[profileSize])
+                                             [work_dim],[global_work_offset])
 ```
 
 - `global_work_size` (*optional*) integer array (up to length 3) specifying global work dimensions. Default unset.
@@ -103,9 +103,6 @@ Default [0,0,0] where OpenCL sets the local work dimensions.
 Default 1 or length of `global_work_size` if specified.
 
 - `global_work_offset` (*optional*) integer array specifying global work offsets in each dimension, default [0,0,0]
-
-- `profileSize` (*optional*) integer specifying number of kernel events to 'record' for profiling information.
-Default 0 (profiling disabled). See [profiling](../profiling).
 
 
 

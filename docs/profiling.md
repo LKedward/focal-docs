@@ -1,96 +1,116 @@
 # Profiling OpenCL code in Focal
 
-OpenCL has a built in event profiling functionality whereby timings (SUBMIT, START, END) are available for enqueued operations.
+OpenCL has a built in event profiling functionality whereby timings are available for enqueued operations.
 This functionality can be handled automatically in Focal by enabling profiling on kernel and buffer objects.
 When enabled, kernel launch events and buffer transfer events are 'recorded' for which timing information can be
 later extracted and processed.
 
-## 1. Enable profiling
+__Example program:__ [nbody.f90](https://github.com/LKedward/focal/blob/profiling-trace/examples/nbody.f90)
 
-Enabling profiling requires allocating space to 'record' events.
-You can allocate space for the expected number of events or for a number less than this.
-If less space is allocated than events enqueued, then only the last `N` events are recorded.
-*i.e* event recording 'loops around' to overwrite previous events.
+## 1. Standard: Use a profiler object
 
-### 1.1 Kernels
+An `fclProfiler` type is provided to simplify the extraction of profiling data.
+This type simply represents a collection of kernels and buffers for which you wish to
+generate profiling data.
+A set of routines are provided to extract and present profiling data for all kernels
+and buffers in a particular profiler object.
 
-When creating a kernel object, specify a `profileSize` for the number of kernel events to record.
+### 1.1 Define a profiler
 
-__Example__
+To start, we must define a profiler object and set the device it is associated with:
 
-```fortran
-type(fclProgram) :: prog
-type(fclKernel) :: myKernel
-...
-myKernel = fclGetProgramKernel(prog,kernelName='sum',profileSize=100)
-```
-
-Here we extract a focal kernel object for the kernel `sum` with space for recording 100 events.
-
-__API ref:__
-[fclGetProgramKernel](https://lkedward.github.io/focal-api/interface/fclgetprogramkernel.html)
-
-### 1.2 Buffers
-
-When initialising a buffer object, specify a `profileSize` and optionally a `profileName` for the number of
-buffer transfer events to record and a description for profiling output respectively.
-
-__Example__
+Assuming we have a context `ctx` and we have a device list `devices` (see [Setup: Querying devices](../setup/#4-querying-devices))
+from which we are going to use the first device, then we set the profiler device as follows:
 
 ```fortran
-integer :: N
-type(fclFloat) :: deviceArray
+type(fclProfiler) :: profiler
+type(fclDevice), allocatable :: devices(:)
 ...
-deviceArray = fclBufferFloat(N,.true.,.false., &
-                        profileSize=100,profileName='deviceArray')
+devices = fclFindDevices(ctx,type='cpu',sortBy='cores')
+profiler%device = devices(1)
 ```
 
-Here we define a read-only (for kernels) float buffer of `N` elements with space to
-record 100 transfer events.
-We additionally specify the `profileName` using the variable name.
+__API ref:__
+[fclProfiler](https://lkedward.github.io/focal-api/type/fclprofiler.html)
+
+### 1.2 Enable profiling on kernels and buffers
+
+Once we have a profiler with an associated device and have initialised our
+kernels and buffers, we can enable profiling with the following interfaces:
+
+__Interface:__
+
+```fortran
+call fclProfilerAdd(<fclProfiler>,profileSize=<int>,<fclKernel|fclBuffer>,...)
+```
+
+or equivalently:
+
+```fortran
+call <fclProfiler>%add(profileSize=<int>,<fclKernel|fclBuffer>,...)
+```
+
+Both interface formats are equivalent.
+
+- `profileSize` specifies the amount of space to allocate for recording events:
+set to the number of events you wish to record.
+If more events occur than space allocated, then 'old' events are simply overridden.
+*i.e.* only the last `profileSize` events are recorded.
+
+- Up to 10 kernel or buffer objects can be passed as arguments after `profileSize`.
+The same profile size is allocated for each kernel or buffer specified.
+
+__Example:__
+
+```fortran
+type(fclProfiler) :: profiler
+type(fclKernel) :: myKernel1, myKernel2
+type(fclDeviceInt32) :: buffer1
+type(fclDeviceInt32) :: buffer2
+...
+profiler%add(100,myKernel1,myKernel2)
+profiler%add(10,buffer1,buffer2)
+```
+
+In this example, we enable profiling for both kernels with space for 100 events and,
+in a separate call, we enable profiling for two buffer objects with space for 10 events.
+
+!!! note
+    If intending to profile a buffer object, make sure you specify a `profileName`
+    when [initialising](../memory/#1-initialise-device-memory) the buffer so that
+    the profiler can print it in the output.
+
 
 __API ref:__
-[fclBufferInt32](https://lkedward.github.io/focal-api/interface/fclbufferint32.html),
-[fclBufferFloat](https://lkedward.github.io/focal-api/interface/fclbufferfloat.html),
-[fclBufferDouble](https://lkedward.github.io/focal-api/interface/fclbufferdouble.html)
+[fclProfilerAdd](https://lkedward.github.io/focal-api/interface/fclprofileradd.html)
 
-## 2. Get profiling data
 
-### 2.1 Print out profiling data
+### 1.3 Print out profiling data summary
 
 Once your OpenCL program has completed and all events are finished (see [host synchronisation](../events#2-host-synchronisation)),
-we can use the command `fclDumpProfileData` to extract and display profiling results.
+we can use the command `fclDumpProfileData` with our profiler object to extract and display profiling results.
 
-__Interfaces__
+__Interface:__
 
 ```fortran
-call fclDumpProfileData([outputUnit=<integer>],kernelList=<fclKernel(:)>,device=<fclDevice>)
-call fclDumpProfileData([outputUnit=<integer>],bufferList1=<fclBuffer(:)>,[bufferList2=<fclBuffer(:)>],[bufferList3=<fclBuffer(:)>])
+call fclDumpProfileData(<fclProfiler>,outputUnit=<int>)
 ```
 
-- `outputUnit` (*optional*) specifies the output (file) unit to write profiling information.
-If omitted then `stdout` is used.
+- The first argument is the profiler object for which we wish to print out data for.
 
-- `kernelList` specifies a list of focal kernel objects for which to print out profiling data
+- `outputUnit` is an __optional__ integer argument to specify an open file unit to which to print
+profiling data summary. If omitted then `stdout` is used and data is printed to the screen.
 
-- `device` is the device object on which the kernels were executed
-
-- `bufferList` specifies a list of focal buffer objects for which to print out profiling data.
-Use `bufferList1`, `bufferList2`, `bufferList3` for buffers of different types.
-
-__Example__
+__Example:__
 
 ```fortran
-type(fclDevice) :: myDevice
-type(fclKernel) :: initK, collideK, boundariesK, streamK, calcVarsK
-type(fclDeviceFloat) :: velocities_d,rho_d,u_d,v_d
-type(fclDeviceInt32) :: bcFlags_d
+type(fclProfiler) :: profiler
 ...
-call fclDumpProfileData([initK,collideK,boundariesK,streamK,calcVarsK],myDevice)
-call fclDumpProfileData([velocities_d,rho_d,u_d,v_d],[bcFlags_d])
+call fclWait()
+call fclDumpProfileData(profiler)
 ```
 
-This prints the following output to standard output:
+The following is an example of output from `fclDumpProfileData`:
 
 ```
  -----------------------------------------------------------------------------
@@ -118,15 +138,81 @@ This prints the following output to standard output:
  -----------------------------------------------------------------------------
 ```
 
+
 __API ref:__
 [fclDumpProfileData](https://lkedward.github.io/focal-api/interface/fcldumpprofiledata.html)
 
 
-### 2.2 Extract profiling data
+### 1.4 Generate a chrome tracing file
+
+The Google Chrome web browser has a built-in profiler which can
+[load and display](https://aras-p.info/blog/2017/01/23/Chrome-Tracing-as-Profiler-Frontend/)
+any arbitrary profiling data as long as it is in the expected
+[JSON format](https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview).
+
+The `fclDumpTracingData` routine is provided to generate such JSON files for use
+with chrome tracing.
+
+__Interface:__
+
+```fortran
+call fclDumpTracingData(<fclProfiler>,filename=<character(*)>)
+```
+
+__Example:__
+
+```fortran
+type(fclProfiler) :: profiler
+...
+call fclWait()
+call fclDumpTracingData(profiler,'trace.json')
+```
+
+__API ref:__
+[fclDumpTracingData](https://lkedward.github.io/focal-api/interface/fcldumptracingdata.html)
+
+## 2. Advanced: Get timings explicitly
+
+### 2.1 Enable profiling without a profiler object
+
+The `fclProfiler` type provides a convenient interface for producing aggregate
+profiling information for a collection of kernels and buffers.
+However a profiler object is not required if you want to access profiling data directly.
+To enable profiling on a kernel or buffer directly, use `fclEnableProfiling`.
+
+__Interfaces:__
+
+```fortran
+call fclEnableProfiling(<fclKernel>,profileSize=<int>)
+call fclEnableProfiling(<fclBuffer>,profileSize=<int>)
+```
+
+Or equivalently:
+
+```fortran
+call <fclKernel>%enableProfiling(profileSize=<int>)
+call <fclBuffer>%enableProfiling(profileSize=<int>)
+```
+
+__Example:__
+
+```fortran
+type(fclKernel) :: myKernel
+type(fclDeviceFloat) :: myBuffer
+...
+call fclEnableProfiling(myKernel,100)
+call fclEnableProfiling(myBuffer,50)
+```
+
+__API ref:__
+[fclEnableProfiling](https://lkedward.github.io/focal-api/interface/fclenableprofiling.html)
+
+
+### 2.2 Extract event durations
 
 To access profiling data directly, use the command `fclGetEventDurations` and pass in the `profileEvents` component
 of the kernel or buffer object.
-This will return an integer array where each entry corresponds to the duration in nanoseconds of an event in the input array.
+This will return an integer array where each entry corresponds to the duration in __nanoseconds__ of an event in the input array.
 
 __Interface__
 

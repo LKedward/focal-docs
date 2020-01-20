@@ -12,7 +12,9 @@ type(fclContext) :: ctx
 ctx = fclCreateContext(vendor='nvidia')
 ```
 
-If we're only using one platform/context, then we can shorten this by setting the default context (`fclDefaultCtx`) so that we don't need to pass a context variable to subsequent focal calls:
+You can also specify multiple vendors in order of preference using commas to separate different vendors (*e.g.* `vendor='nvidia,amd,intel'`); if the first vendor is not available then subsequent vendors are looked-for.
+
+If we're only using one platform/context, then we can set the default context (`fclDefaultCtx`) so that we don't need to pass a context variable to subsequent focal calls:
 
 
 ```fortran

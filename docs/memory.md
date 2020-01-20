@@ -10,9 +10,9 @@ A command queue may optionally be specified, if omitted the the default command 
 
 __Interfaces__
 ```fortran
-<fclDeviceInt32> = fclBufferInt32([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
-<fclDeviceFloat> = fclBufferFloat([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
-<fclDeviceDouble> = fclBufferDouble([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileSize],[profileName])
+<fclDeviceInt32> = fclBufferInt32([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
+<fclDeviceFloat> = fclBufferFloat([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
+<fclDeviceDouble> = fclBufferDouble([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
 ```
 
 - `cmdQ` (*optional*) specifies the command queue to which this buffer is associated.
@@ -23,9 +23,6 @@ All buffer operations will occur on this command queue. `cmdQ` can be omitted if
 - `read` specifies whether kernels can read from this buffer
 
 - `write` specifies whether kernels can write to this buffer
-
-- `profileSize` (*optional*) specifies the number of data transfer events to 'record' for profiling.
-Default 0 (profiling disabled). See [profiling](../profiling).
 
 - `profileName` (*optional*) descriptive name when printing profiling information. See [profiling](../profiling).
 
