@@ -4,11 +4,11 @@ To use the Focal library, it must first be compiled for the target architecture.
 The Focal library is built and tested regularly with gfortran on RHEL, Ubuntu and Windows (using MinGW under [MSYS2](https://www.math.ucla.edu/~wotaoyin/windows_coding.html)).
 
 ## Prerequisies
-- Fortran compiler supporting the 2008 standard (tested with gfortran and ifort)
+- Fortran compiler supporting the 2008 standard (tested with gfortran 7)
 - An OpenCL development library (One of:
 [Intel OpenCL SDK](https://software.intel.com/en-us/opencl-sdk),
 [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads),
-[AMD OpenCL SDK](https://github.com/GPUOpen-LibrariesAndSDKs/OCL-SDK/releases) )
+[AMD Radeon Software](https://www.amd.com/en/support) )
 
 ## Build
 Navigate to the repository root and run make:
@@ -38,8 +38,9 @@ which will place example binaries in `$(FOCAL_DIR)/bin/`.
 A non-recursive sub-makefile is [included](https://github.com/LKedward/focal/blob/master/make.include) in the Focal repository root directory
 for inclusion within project makefiles.
 To use, simply include the sub-makefile into your project makefile (after the `all` recipe) and define the make variable `FOCAL_DIR` as the path to the Focal root directory;
-finally create a dependency of your executable(s) on `$(FOCAL_LIB_OBJS)`.
-This will ensure the Focal library is built prior to executable linking.
+finally create a dependency of your objects on `$(FOCAL_LIB_OBJS)`.
+This will ensure the Focal library is built prior to building your objects.
 See [linking](../linking) for how to link against the Focal library.
+See [this](https://github.com/LKedward/lbm2d_opencl) lattice Boltzmann code as an example.
 
 Consider including Focal within your project using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).

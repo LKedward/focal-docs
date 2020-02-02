@@ -13,14 +13,14 @@ end program myprogram
 
 ## Compile
 To compile a program using the Focal module, you must point the compiler to the `mod/Focal.mod` definition in the Focal repository.
-For example, in gfortran this is done with the `-J` flag:
+For example, in gfortran this is done with the `-I` flag:
 
 ```shell
-$> gfortran -c myprogram.f90 -J/path/to/focal/mod/ -o myprogram.o
+$> gfortran -c myprogram.f90 -I/path/to/focal/mod/ -o myprogram.o
 ```
 
 ## Link
-To link, you need to specify the path to the Focal repository and directives for `focal` and `OpenCL`:
+To link, you need to specify the path to the Focal repository and directives for `Focal` and `OpenCL`:
 
 ```shell
 $> gfortran myprogram.o -L/path/to/focal/lib/ -lfocal -lOpenCL -o bin/myprogram
@@ -36,8 +36,8 @@ See examples in the repository for how this can be done with a `makefile`.
 
 
 ## Debug build
-When the Focal library is built, two versions are produced: `libfocal` and `libfocaldbg` where the latter
+When the Focal library is built, two versions are produced: `libFocal` and `libFocaldbg` where the latter
 contains additional runtime calls that check the validity of your program.
 
-To link against the debug build replace `-lfocal` with `-lfocaldbg` in the linking command.
+To link against the debug build replace `-lFocal` with `-lFocaldbg` in the linking command.
 See [here](../errors#2-runtime-debug-checks) for more information on runtime debug checks.

@@ -187,12 +187,6 @@ call fclEnableProfiling(<fclKernel>,profileSize=<int>)
 call fclEnableProfiling(<fclBuffer>,profileSize=<int>)
 ```
 
-Or equivalently:
-
-```fortran
-call <fclKernel>%enableProfiling(profileSize=<int>)
-call <fclBuffer>%enableProfiling(profileSize=<int>)
-```
 
 __Example:__
 
