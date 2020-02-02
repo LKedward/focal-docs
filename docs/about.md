@@ -23,7 +23,7 @@ ToDo:
 
 * User events
 * Sub-buffer creation
-* Pinned memory allocation on host
+* Device partitions
 * CMake build
 * Quick reference card
 
