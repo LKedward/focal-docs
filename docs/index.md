@@ -19,6 +19,7 @@ __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 * [Using and linking Focal](linking)
 * [Quickstart programming guide](quickstart)
 * [Example programs](https://github.com/LKedward/focal/tree/master/examples)
+* [Lattice Boltzmann demo](https://github.com/LKedward/lbm2d_opencl)
 
 ## A quick example
 The following fortran program calculates the sum of two large arrays using an OpenCL kernel.

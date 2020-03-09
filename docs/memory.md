@@ -296,7 +296,7 @@ Allocate a two-dimensional integer array using pinned memory.
 
 ```fortran
 type(fclCmdQ) :: cmdQ
-integer, pointer :: pinnedArray(:)
+integer, pointer :: pinnedArray(:,:)
 ...
 call fclAllocHost(cmdQ,pinnedArray,[10,10])
 ```

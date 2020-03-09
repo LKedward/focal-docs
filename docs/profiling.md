@@ -5,7 +5,7 @@ This functionality can be handled automatically in Focal by enabling profiling o
 When enabled, kernel launch events and buffer transfer events are 'recorded' for which timing information can be
 later extracted and processed.
 
-__Example program:__ [nbody.f90](https://github.com/LKedward/focal/blob/profiling-trace/examples/nbody.f90)
+__Example program:__ [nbody.f90](https://github.com/LKedward/focal/blob/master/examples/nbody.f90)
 
 ## 1. Standard: Use a profiler object
 
