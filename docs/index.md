@@ -7,11 +7,23 @@ Moreover, Focal introduces typed buffer objects in host code which abstracts byt
 Focal also provides a customisable error handler for OpenCL API errors as well as a [debug version](../errors#2-runtime-debug-checks) containing useful runtime checks for
 ensuring OpenCL program validity.
 
-__Project status:__ *Beta*
+__Project status:__ v1.0.0 Stable release
 
 __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 
 __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
+
+
+## Main features
+
+* Removes use of c pointers to call OpenCL API
+* Provides a level of type safety using typed buffer objects
+* Decreases verbosity of OpenCL API calls while still providing the same functionality
+* Abstracts away low level details, such as size in bytes
+* Contains built-in customisable error handling for all OpenCL API calls
+* Contains built-in 'debug' mode for checking program correctness
+* Contains build-in routines for collecting and presented profiling information
+
 
 ## Getting started
 
@@ -21,7 +33,8 @@ __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 * [Example programs](https://github.com/LKedward/focal/tree/master/examples)
 * [Lattice Boltzmann demo](https://github.com/LKedward/lbm2d_opencl)
 
-## A quick example
+
+## Quick example
 The following fortran program calculates the sum of two large arrays using an OpenCL kernel.
 
 ```fortran
