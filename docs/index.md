@@ -14,6 +14,15 @@ __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 
 
+## Getting started
+
+* [Building the Focal Library](build)
+* [Using and linking Focal](linking)
+* [Quickstart programming guide](quickstart)
+* [Example programs](https://github.com/LKedward/focal/tree/master/examples)
+* [Lattice Boltzmann demo](https://github.com/LKedward/lbm2d_opencl)
+
+
 ## Main features
 
 * Removes use of c pointers to call OpenCL API
@@ -23,15 +32,6 @@ __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 * Contains built-in customisable error handling for all OpenCL API calls
 * Contains built-in 'debug' mode for checking program correctness
 * Contains build-in routines for collecting and presented profiling information
-
-
-## Getting started
-
-* [Building the Focal Library](build)
-* [Using and linking Focal](linking)
-* [Quickstart programming guide](quickstart)
-* [Example programs](https://github.com/LKedward/focal/tree/master/examples)
-* [Lattice Boltzmann demo](https://github.com/LKedward/lbm2d_opencl)
 
 
 ## Quick example

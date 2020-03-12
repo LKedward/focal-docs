@@ -9,8 +9,8 @@ Skip to [here](#22-with-a-vendor-string) for quickly creating a context just by 
 ## 1. Querying platforms
 OpenCL is able to support multiple different implementations on the same host using a platform model.
 An OpenCL platform is a specific OpenCL implementation; in general, platforms coincide with different hardware vendors.
-For example, if your machine has an Intel CPU and an NVIDIA graphics card both with drivers supporting OpenCl,
-then you will have two platforms available: on each for Intel and NVIDIA.
+For example, if your machine has an Intel CPU and an NVIDIA graphics card both with drivers supporting OpenCL,
+then you will have two platforms available: one each for Intel and NVIDIA.
 
 We can get a list of platforms using the Focal subroutine `fclGetPlatforms()`.
 This returns a list of Focal `fclPlatform` objects:

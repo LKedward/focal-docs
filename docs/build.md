@@ -1,15 +1,10 @@
 # Building the Focal Library
 
-The Focal library is built and tested regularly with the following compilers:
-
-* `gfortran` 7.4.0 & 9.1.0
-* `ifort` 19.1.0
-
 
 ## Prerequisies
 
-- GNU make utility
-- Fortran compiler supporting the 2008 standard
+- [GNU make](https://www.gnu.org/software/make/) utility
+- Fortran compiler supporting the 2008 standard (tested regularly with `gfortran` 7.4.0 & 9.1.0 and `ifort` 19.1.0 )
 - An OpenCL development library (One of:
 [Intel OpenCL SDK](https://software.intel.com/en-us/opencl-sdk),
 [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads),
@@ -23,12 +18,6 @@ $> make -j
 ```
 
 Parallel build is fully supported by the makefile, so use of the `-j` flag is recommended.
-
-If the linker fails to link `-lOpenCL`, you will have to specify the location of the OpenCL development library manually, e.g.:
-
-```shell
-$> make -j OPENCL_DIR="path/to/OpenCL/"
-```
 
 To build the example programs:
 

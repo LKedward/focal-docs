@@ -8,17 +8,27 @@ We can quickly initialse an OpenCL context with a specific device using the `fcl
 This functions allows us to filter and sort available devices based on their properties and choose one of them
 to work with.
 
+__Example:__
 ```fortran
 type(fclDevice) :: device
 ...
 device = fclInit(vendor='nvidia,amd',type='gpu',sortBy='cores')
 ```
 
-In this example we have specified any `gpu` device having belonging to vendors `nvidia` OR `amd` and to choose the device
+In this example we have specified any `gpu` device belonging to vendors `nvidia` OR `amd` and to choose the device
 with the most compute units (`cores`).
 
-Additional filter fields that can be used are: `extensions` to filter based on support OpenCL extensions;
+We can alternatively sort devices by total global memory (`sortBy='memory'`) or by maximum clock speed (`sortBy='clock'`).
+Additional filter fields that can be used are: `extensions` to filter based on supported OpenCL extensions;
 and `nameLike` to filter based on the name of the device.
+
+
+__Example:__
+```fortran
+type(fclDevice) :: device
+...
+device = fclInit(type='gpu',nameLike='tesla',sortBy='memory')
+```
 
 If the function is able to find a device matching the criteria, then it initialises an OpenCL context on the corresponding
 platform and returns an `fclDevice` object on which we can create command queues.
@@ -143,7 +153,7 @@ deviceArray1 = deviceArray2
 ```
 
 !!! note
-    By default transfer operations involving a host array are __blocking__: host code does not continue until the transfer has completed.
+    By default, transfer operations involving a host array are __blocking__: host code does not continue until the transfer has completed.
 
 
 ## 5. Launch a kernel
