@@ -10,44 +10,51 @@ A command queue may optionally be specified, if omitted the the default command 
 
 __Interfaces__
 ```fortran
-<fclDeviceInt32> = fclBufferInt32([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
-<fclDeviceFloat> = fclBufferFloat([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
-<fclDeviceDouble> = fclBufferDouble([cmdQ],dim=<int>,read=<logical>,write=<logical>,[profileName])
+call fclInitBuffer([cmdQ],untypedBuffer,nBytes,[profileName],[access])
+call fclInitBuffer([cmdQ],typedBuffer,dim,[profileName],[access])
 ```
 
 - `cmdQ` (*optional*) specifies the command queue to which this buffer is associated.
 All buffer operations will occur on this command queue. `cmdQ` can be omitted if the default command queue has been set.
 
-- `dim` specifies the number of elements for which to allocate the buffer.
+- `untypedBuffer` (`type(fclDeviceBuffer)`) is a general buffer object with no associated type information
 
-- `read` specifies whether kernels can read from this buffer
+- `typedBuffer` can be one of `type(fclDeviceInt32)`, `type(fclDeviceFloat)`, `type(fclDeviceDouble)`
 
-- `write` specifies whether kernels can write to this buffer
+- `nBytes` (`integer`): number of bytes to allocated for an untyped buffer object
 
-- `profileName` (*optional*) descriptive name when printing profiling information. See [profiling](../profiling).
+- `dim` (`integer`): number of elements for which to allocate the typed buffer
 
-__Example: read-only integer buffer with 1000 elements__
+- `profileName` (`character(*)`, `optional`): descriptive name for printing profiling information. See [profiling](../profiling).
+
+- `access` (one of `'r'`, `'w'`, `'rw'`, `optional`): kernel read/write access to buffer, default `'rw'`.
+
+__Example:__
+read-only integer buffer with 1000 elements
 
 ```fortran
 type(fclDeviceInt32) :: array_d
-array_d = fclBufferInt32(dim=1000,read=.true.,write=.false.)
+call fclInitBuffer(array_d,dim=1000,access='r')
 ```
 No command queue is specified, so the default command queue is used (`fclDefaultCmdQ`) which is assumed to have been initialised.
 'Read only' in this context means that OpenCL kernels cannot write to this buffer.
 
-__Example: read-write double precision buffer with command queue__
+__Example:__
+read-write double precision buffer with command queue
 
 ```fortran
 type(fclDeviceDouble) :: array_d
 type(fclCmdQ) :: cmdq
 ...
-array_d = fclBufferDouble(cmdq,dim=1000,read=.true.,write=.true.)
+call fclInitBuffer(cmdq,array_d,dim=1000,profileName='array_d')
 ```
 
 __API ref:__
-[fclBufferInt32](https://lkedward.github.io/focal-api/interface/fclbufferint32.html),
-[fclBufferFloat](https://lkedward.github.io/focal-api/interface/fclbufferfloat.html),
-[fclBufferDouble](https://lkedward.github.io/focal-api/interface/fclbufferdouble.html)
+[fclInitBuffer](https://lkedward.github.io/focal-api/interface/fclinitbuffer.html),
+[fclDeviceBuffer](https://lkedward.github.io/focal-api/type/fcldevicebuffer.html),
+[fclDeviceInt32](https://lkedward.github.io/focal-api/type/fcldeviceint32.html),
+[fclDeviceFloat](https://lkedward.github.io/focal-api/type/fcldevicefloat.html),
+[fclDeviceDouble](https://lkedward.github.io/focal-api/type/fcldevicedouble.html)
 
 
 
@@ -55,12 +62,6 @@ __API ref:__
 
 The assignment `=` operator can be used to fill an initialised device buffer with a scalar value.
 
-__Interfaces__
-```fortran
-<fclDeviceInt32(n)>  = <integer>      ! host_scalar-to-device
-<fclDeviceFloat(n)>  = <float>
-<fclDeviceDouble(n)> = <double>
-```
 
 __Example__
 ```fortran
@@ -68,8 +69,8 @@ type(fclDeviceFloat) :: deviceFloat
 type(fclDevicDouble) :: deviceDouble
 ...
 ! Initialise device arrays
-deviceFloat = fclBufferFloat(Nelem,read=.true.,write=.true.)
-deviceDouble = fclBufferDouble(Nelem,read=.true.,write=.true.)
+call fclInitBuffer(deviceFloat,Nelem)
+call fclInitBuffer(deviceDouble,Nelem)
 
 ! Fill arrays with zeros
 deviceFloat = 0.0
@@ -78,7 +79,7 @@ deviceDouble = 0.0d0
 
 !!! note
     Since filling an array with a scalar value does not involve a host array pointer, it is __non-blocking__.
-    The scalar assignment is enqueued onto the device and host code continues. Call `fclWait(cmdq%lastWriteEvent)` to wait.
+    The scalar assignment is enqueued onto the command queue and host code continues. Call `fclWait(cmdq%lastWriteEvent)` to wait.
 
 __API ref:__
 [Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html)
@@ -88,24 +89,17 @@ __API ref:__
 Data transfer between a device buffer and a host array can be achieved using the assignment `=` operation.
 When transferring data, the host and device arrays must be of compatible types.
 
-### 3.1 Transfer from host to device
 
 
-__Interfaces__
-```fortran
-<fclDeviceInt32(n)>  = <integer(n)>   ! Host-to-device
-<fclDeviceFloat(n)>  = <real32(n)>   
-<fclDeviceDouble(n)> = <real64(n)>
-```
-
-__Example__
+__Example__:
+transfer from host to device
 
 ```fortran
 real(real32) :: hostArray(Nelem)
 type(fclDeviceFloat) :: deviceArray
 ...
 ! Initialise device array
-deviceArray = fclBufferFloat(Nelem,read=.true.,write=.true.)
+call fclInitBuffer(deviceArray,Nelem)
 
 ! Copy to device from host
 deviceArray = hostArray
@@ -113,24 +107,8 @@ deviceArray = hostArray
 
 !!! note
     Since transferring arrays involves a host array pointer, it is __blocking__ by default.
-    Host code does not continue until transfer completes. Set `cmdq%blockingWrite = .false.` for asynchronous transfer.
+    Host code does not continue until transfer completes. Set [command queue](../setup#2-creating-a-command-queue) `blockingWrite` and `blockingRead` to `.false.` for asynchronous transfers.
 
-__API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html)
-
-
-### 3.2 Transfer from device to host
-
-__Interfaces__
-```fortran
-<integer(n)> = <fclDeviceInt32(n)>    ! Device-to-host
-<real32(n)> = <fclDeviceFloat(n)>
-<real64(n)> = <fclDeviceDouble(n)>
-```
-
-!!! note
-    Since transferring arrays involves a host array pointer, it is __blocking__ by default.
-    Host code does not continue until transfer completes. Set `cmdq%blockingRead = .false.` for asynchronous transfer.
 
 __Example: Non-blocking data transfer__
 
@@ -159,21 +137,14 @@ __API ref:__
 
 Device arrays and device array pointers can also be copied using the assignment `=` operator.
 
-__Interfaces__
-```fortran
-<fclDeviceInt32(n)> = <fclDeviceInt32(n)>    ! Device-to-device
-<fclDeviceFloat(n)> = <fclDeviceFloat(n)>
-<fclDeviceDouble(n)> = <fclDeviceDouble(n)>
-```
-
 If both the source object (right value) and target object (left value) are valid initialised device array objects,
 then the assignment operation will enqueue a __non-blocking__ device-to-device transfer.
-This event can be waited upon using `fclWait(cmdq%lastCopyEvent)`.
+This event can be waited upon by the host using `fclWait(cmdq%lastCopyEvent)`.
 
 If the target object (left value) is not initialised then the assignment operation will copy the pointer from the initialised source object (right value)
 such that both objects refer to the same device array.
 
-If the source object (right value) is not initialised then the assignment operation is invalid and throws a runtime error.
+If the source object (right value) is not initialised then the assignment operation is invalid and will result in a runtime error.
 
 __Example__
 
@@ -182,7 +153,7 @@ type(fclDeviceInt32) :: deviceArray1
 type(fclDeviceInt32) :: deviceArray2
 ...
 ! Initialise device array 1
-deviceArray1 = fclBufferInt32(Nelem,read=.true.,write=.true.)
+call fclInitBuffer(deviceArray1,Nelem)
 
 deviceArray2 = deviceArray1
 ! deviceArray2 and deviceArray1 now reference the same device buffer
@@ -195,8 +166,8 @@ type(fclDeviceInt32) :: deviceArray1
 type(fclDeviceInt32) :: deviceArray2
 ...
 ! Initialise both device arrays
-deviceArray1 = fclBufferInt32(Nelem,read=.true.,write=.true.)
-deviceArray2 = fclBufferInt32(Nelem,read=.true.,write=.true.)
+call fclInitBuffer(deviceArray1,Nelem)
+call fclInitBuffer(deviceArray2,Nelem)
 ...
 deviceArray2 = deviceArray1
 call fclWait(fclLastCopyEvent)
@@ -209,21 +180,7 @@ __API ref:__
 [fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
 
 
-## 5. Free device memory
-
-Device memory is released using `fclFreeBuffer`.
-
-__Example__
-
-```fortran
-call fclFreeBuffer(deviceArray)
-```
-
-__API ref:__
-[fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)
-
-
-## 6. Swap buffer pointers
+## 5. Swap buffer pointers
 
 Device buffer pointers can be swapped on the host using `fclBufferSwap`.
 This can be more efficient than performing a device-to-device copy.
@@ -243,8 +200,21 @@ end do
 
 ```
 
+## 6. Free device memory
 
-## 6. Allocate pinned host memory
+Device memory is released using `fclFreeBuffer`.
+
+__Example__
+
+```fortran
+call fclFreeBuffer(deviceArray)
+```
+
+__API ref:__
+[fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)
+
+
+## 7. Allocate pinned host memory
 
 *Pinned* memory refers to non-pageable memory allocated on the host; this memory can be accessed more directly by devices
 since it is guaranteed not to have been '*paged-out*' by the host operating system.
@@ -277,7 +247,7 @@ As usual, when `cmdQ` is not specified the default command queue is assumed.
 where `sp` and `dp` refer to single precision and double precision kinds respectively.
 Note that once allocated, `ptr` can be treated as any other `allocatable` fortran array except that it cannot be deallocated using `deallocate`.
 
-`dim` is the number of elements or an array of dimensions for which to allocate space for.
+`dim` is the number of elements for which to allocate space for.
 
 !!! note
     `fclAllocHost` is a blocking command: execution pauses on the host until the OpenCL map command has completed.
@@ -291,12 +261,4 @@ real, pointer :: pinnedArray(:)
 call fclAllocHost(pinnedArray,10)
 ```
 
-__Example:__
-Allocate a two-dimensional integer array using pinned memory.
 
-```fortran
-type(fclCmdQ) :: cmdQ
-integer, pointer :: pinnedArray(:,:)
-...
-call fclAllocHost(cmdQ,pinnedArray,[10,10])
-```

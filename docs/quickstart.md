@@ -77,7 +77,7 @@ In Focal we use the `fclCompileProgram` command to compile the OpenCL program be
 to extract a kernel object for the particular kernel we are interested in:
 
 ```fortran
-type(fclProgram) :: prorg
+type(fclProgram) :: prog
 type(fclKernel) :: myKernel
 ...
 prog = fclCompileProgram(programSource)
@@ -155,6 +155,8 @@ deviceArray1 = deviceArray2
 !!! note
     By default, transfer operations involving a host array are __blocking__: host code does not continue until the transfer has completed.
 
+See [User guide/Memory](../memory/) for more details on managing memory.
+
 
 ## 5. Launch a kernel
 
@@ -167,3 +169,6 @@ call myKernel%launch(cmdq,1000,deviceArray)
 Again, `cmdq` can be omitted here if you wish to use the default command queue assuming it has been set.
 
 Here we have passed two arguments to the kernel: the scalar integer `1000` and the device array `deviceArray`.
+
+See [User guide/Kernels](../kernels/) for more details.
+

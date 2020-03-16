@@ -13,6 +13,15 @@ __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 
 __License:__ [MIT](https://github.com/LKedward/focal/blob/master/LICENSE)
 
+__Prerequisites:__
+
+- [GNU make](https://www.gnu.org/software/make/) utility
+- Fortran compiler supporting the 2008 standard (tested regularly with `gfortran` 7.4.0 & 9.1.0 and `ifort` 19.1.0 )
+- An OpenCL development library (One of:
+[Intel OpenCL SDK](https://software.intel.com/en-us/opencl-sdk),
+[NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads),
+[AMD Radeon Software](https://www.amd.com/en/support) )
+
 
 ## Getting started
 
@@ -49,20 +58,17 @@ real, parameter :: sumVal = 10.0            ! Target value for array sum
 
 integer :: i                                ! Counter variable
 character(:), allocatable :: kernelSrc      ! Kernel source string
-type(fclDevice), allocatable :: devices(:)      ! List of focal devices
+type(fclDevice) :: device                   ! Device object
 type(fclProgram) :: prog                    ! Focal program object
 type(fclKernel) :: sumKernel                ! Focal kernel object
-real(c_float) :: array1(Nelem)              ! Host array 1
-real(c_float) :: array2(Nelem)              ! Host array 2
+real :: array1(Nelem)                       ! Host array 1
+real :: array2(Nelem)                       ! Host array 2
 type(fclDeviceFloat) :: array1_d            ! Device array 1
 type(fclDeviceFloat) :: array2_d            ! Device array 2
 
-! Create context with nvidia platform
-call fclSetDefaultContext(fclCreateContext(vendor='nvidia'))
-
 ! Select device with most cores and create command queue
-devices = fclFindDevices(sortBy='cores')
-call fclSetDefaultCommandQ(fclCreateCommandQ(devices(1),enableProfiling=.true.))
+device = fclInit(vendor='nvidia',sortBy='cores')
+call fclSetDefaultCommandQ(fclCreateCommandQ(device,enableProfiling=.true.))
 
 ! Load kernel from file and compile
 call fclSourceFromFile('examples/sum.cl',kernelSrc)
@@ -70,8 +76,8 @@ prog = fclCompileProgram(kernelSrc)
 sumKernel = fclGetProgramKernel(prog,'sum')
 
 ! Initialise device arrays
-array1_d = fclBufferFloat(Nelem,read=.true.,write=.false.)
-array2_d = fclBufferFloat(Nelem,read=.true.,write=.true.)
+call fclInitBuffer(array1_d,Nelem)
+call fclInitBuffer(array2_d,Nelem)
 
 ! Initialise host array data
 do i=1,Nelem

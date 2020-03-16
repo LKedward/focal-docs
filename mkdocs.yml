@@ -29,5 +29,6 @@ nav:
     - profiling.md
     - errors.md
 - About:
+    - contributing.md
     - about.md
 - API Reference >: 'https://lkedward.github.io/focal-api'

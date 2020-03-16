@@ -76,12 +76,16 @@ An OpenCL 'program' simply refers to a collection of kernels. So we can collect 
 __Interfaces__
 
 ```fortran
-<fclProgram> = fclCompileProgram(ctx=<fclContext>,source=<character(len=n)>,options=<character(len=n)>)
+prog = fclCompileProgram([ctx],source,[options])
 ```
+* `prog` (`type(fclProgram)`): compiled program object
 
-- If the default context has been set then `ctx` can be omitted.
+* `ctx` (`type(fclContext)`,`optional`): context on which to compile program. Default context is used if omitted.
 
-- The `options` argument is optional and specifies [OpenCL compilation options](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clBuildProgram.html#notes).
+* `source` (`character(*)`): the OpenCL program source code to compile
+
+* `options` (`character(*)`,`optional`): specifies [OpenCL compilation options](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clBuildProgram.html#notes).
+
 
 Once compiled, a specific Focal kernel object can be extracted from the compiled program object using `fclGetProgramKernel`.
 This returns an `fclKernel` object which we can use to launch a specific kernel.
@@ -89,22 +93,40 @@ This returns an `fclKernel` object which we can use to launch a specific kernel.
 __Interfaces__
 
 ```fortran
-<fclKernel> = fclGetProgramKernel(<fclProgram>,kernelName=<character(len=n)>,[global_work_size],[local_work_size], &
+kern = fclGetProgramKernel(prog,kernelName,[global_work_size],[local_work_size], &
                                              [work_dim],[global_work_offset])
 ```
 
-- `global_work_size` (*optional*) integer array (up to length 3) specifying global work dimensions. Default unset.
-Automatically sets `work_dim` to the length of `global_work_size`.
+* `kern` (`type(fclKernel)`): kernel object used to launch kernels
+ 
+* `prog` (`type(fclProgram)`): program object containing compiled kernels
 
-- `local_work_size` (*optional*) integer array (up to length 3) specifying local work group dimensions.
-Default [0,0,0] where OpenCL sets the local work dimensions.
+* `kernelName` (`character(*)`): case-sensitive kernel function name
 
-- `work_dim` (*optional*) integer specifying number of work group dimensions.
+* `global_work_size` (`integer(dim)`,`optional`) array (up to length 3) specifying global work dimensions. Default unset.
+If specified, also automatically sets `work_dim` to the length of `global_work_size`.
+
+* `local_work_size` (`integer(dim)`,`optional`) array (up to length 3) specifying local work group dimensions.
+Default [0,0,0] meaning OpenCL sets the local work dimensions.
+
+* `work_dim` (`integer`,`optional`) specifies number of work group dimensions.
 Default 1 or length of `global_work_size` if specified.
 
-- `global_work_offset` (*optional*) integer array specifying global work offsets in each dimension, default [0,0,0]
+* `global_work_offset` (`integer(dim)`,`optional`) array specifying global work offsets in each dimension, default [0,0,0]
 
+The kernel parameters `global_work_size`, `local_work_size`, `work_dim`, and `global_work_offset` can also be set using the
+syntax:
 
+```fortran
+kern%global_work_size = [10, 10, 10]
+kern%local_work_size = [10, 1, 1]
+kern%work_dim = 3
+kern%global_work_offset = [0, 0, 0]
+```
+
+!!! note
+    When kernels are launched, the `global_work_size` is automatically modified to ensure it is a multiple of `local_work_size` in
+    all dimensions by increasing it where necessary.
 
 __Example__
 
@@ -134,9 +156,16 @@ Once an `fclKernel` object exists, the kernel can be launched with the following
 myKernel%launch(cmdq,arg1,arg2)
 ```
 
+or equivalently:
+
+```fortran
+call fclLaunchKernel(myKernel,cmdq,arg1,arg2)
+```
+
 If the default command queue has been set, then `cmdq` can be omitted here.
-In this example two kernel arguments are supplied `arg1` and `arg2`.
+In these examples two kernel arguments are supplied `arg1` and `arg2`.
 Kernel arguments can be scalar variables, device buffer objects or local memory specifiers.
+Up to 20 kernel arguments can be specified using this syntax.
 
 __Example:__
 Launch a kernel with a scalar integer argument and a device buffer argument.
