@@ -2,15 +2,60 @@
 
 All OpenCL actions occur via contexts, which are containers for related devices, and command queues which are attached to specific devices.
 Each context is associated with a specific platform where a platform generally coincides with a particular vendor.
-Before we can create a context, we need to see which platforms are available.
 
-Skip to [here](#22-with-a-vendor-string) for quickly creating a context just by specifying the vendor name.
 
-## 1. Querying platforms
+## 1a. Quick setup 
+
+We can use the `fclInit` function to quickly select a device based on criteria from all devices available on the system.
+If a device matching the specified criteria is found, then this device is returned as an object and the __default context__ is set
+using the platform containing the matching device.
+
+__Interface:__
+
+```fortran
+device = fclInit([vendor],[type],[nameLike],[extensions],[sortBy])
+```
+
+* `device` (`type(fclDevice)`): the chosen device returned by the function
+
+* `vendor` (`character(*)`,`optional`): if specified, look for this (sub)string in device vendor to filter available devices.
+
+* `type` (one of `'cpu'` or `'gpu'`,`optional`): if specified, filter available devices based on device type.
+
+* `nameLike` (`character(*)`,`optional`): if specified, look for this (sub)string in device name to filter available devices.
+
+* `extensions` (`character(*)`,`optional`): if specified, look for these OpenCL extensions (command-separated) to filter available devices; any device that does not support all extensions specified will be filtered out.
+
+* `sortBy` (one of `'core'`,`'memory'`,`'clock'`, `optional`): from the filtered list, choose the device with the most compute units or total memory or clock speed.
+
+__Example:__
+```fortran
+type(fclDevice) :: device
+...
+device = fclInit(vendor='nvidia,amd',type='gpu',sortBy='cores')
+```
+
+In this example we have specified any `gpu` device belonging to vendors `nvidia` OR `amd` and to choose the device
+with the most compute units (`cores`).
+
+!!! note
+    `fclInit` automatically creates an OpenCL context for the chosen device and uses it to set the __default context__.
+    By setting the default context, subsequent Focal API calls can omit the context (`'ctx'`) argument.
+
+To add more devices from the same vendor, see `fclFindDevices` below.
+
+__[Jump down to command queues](#2-creating-a-command-queue) to now create a command queue on your chosen device__
+
+
+
+## 1b. Advanced setup
+
+
+### Querying platforms
 OpenCL is able to support multiple different implementations on the same host using a platform model.
 An OpenCL platform is a specific OpenCL implementation; in general, platforms coincide with different hardware vendors.
-For example, if your machine has an Intel CPU and an NVIDIA graphics card both with drivers supporting OpenCl,
-then you will have two platforms available: on each for Intel and NVIDIA.
+For example, if your machine has an Intel CPU and an NVIDIA graphics card both with drivers supporting OpenCL,
+then you will have two platforms available: one each for Intel and NVIDIA.
 
 We can get a list of platforms using the Focal subroutine `fclGetPlatforms()`.
 This returns a list of Focal `fclPlatform` objects:
@@ -30,50 +75,37 @@ __API ref:__
 [fclGetPlatformInfo](https://lkedward.github.io/focal-api/interface/fclgetplatforminfo.html)
 
 
-## 2. Creating a context
+### Create a context
+We can explicitly create an OpenCL context with a particular platform or vendor using `fclCreateContext`:
 
-### 2.1 With a platform object
-Having queried available platforms as above, we can create an Focal context object using `fclCreateContext`:
+There are two ways of calling this function, either with a platform object (see `fclGetPlatforms()` above to query platforms) or with 
+a vendor string to specify the desired vendor:
 
+__Interface:__
 ```fortran
-type(fclPlatform), allocatable :: platforms(:)
-type(fclContext) :: ctx
-...
-platforms = fclGetPlatforms()
-ctx = fclCreateContext(platforms(i))
+ctx = fclCreateContext(platform)
+ctx = fclCreateContext(vendor)
 ```
 
-Here we have chosen the `i`*th* platform from the `platforms` array.
+* `ctx` (`type(fclContext)`): context object returned
 
-__API ref:__
-[fclCreateContext](https://lkedward.github.io/focal-api/interface/fclcreatecontext.html)
+* `platform` (`type(fclPlatform)`): a Focal platform object on which to create the context. 
+
+* `vendor` (`character(*)`): string or comma-separate list of strings to select a particular device vendor. If multiple vendors are specified, then the first vendor 
+in the list that is found on the system is chosen, *i.e.* specify vendors in order of preference.
 
 
-### 2.2 With a vendor string
-It is commonly required to choose a platform based on the vendor, so an alternative syntax for creating a context
-is provided whereby a string is used to find a matching platform vendor:
-
+__Example:__
 ```fortran
 type(fclContext) :: ctx
 ...
-ctx = fclCreateContext(vendor='nvidia')
+ctx = fclCreateContext('nvidia,intel')
 ```
 
-Here we have requested a context be created on the first platform where the vendor string contains 'nvidia' (case insensitive).
-
-We can also specify a comma-delimited list of vendors in order of preference; if the first vendor is not available, subsequent vendors can be specified:
-
-```fortran
-type(fclContext) :: ctx
-...
-ctx = fclCreateContext(vendor='nvidia,amd,intel')
-```
-
-__API ref:__
-[fclCreateContext](https://lkedward.github.io/focal-api/interface/fclcreatecontext.html)
+In this example we create a context with first preference `'nvidia'` and second preference `'intel'` as device vendors.
 
 
-### 2.3 The default context
+### The default context
 
 Once created, the resulting context object (called `ctx` above) is used in subsequent Focal calls to indicate which context to use.
 If you are only using one context throughout your program, then your code can be simplified by setting the *default context*.
@@ -107,11 +139,22 @@ __API ref:__
 [fclSetDefaultContext](https://lkedward.github.io/focal-api/interface/fclsetdefaultcontext.html),
 [fclDefaultCtx](https://lkedward.github.io/focal-api/module/focal.html#variable-fcldefaultctx)
 
+### Query devices on the context
 
-## 4. Querying devices
-
-A useful way of querying available devices is provided by the `fclFindDevices` function which enables us
+A useful way of querying available devices in a context is provided by the `fclFindDevices` function which enables us
 to filter the device list based on device type, device name as well as sort the list according to device properties.
+
+__Interface:__
+```fortran
+devices = fclFindDevices(ctx,[type],[nameLike],[extensions],[sortBy])
+devices = fclFindDevices([type],[nameLike],[extensions],[sortBy])
+```
+
+where arguments `type`, `nameLike`, `extensions`, and `sortBy` have the same definitions as defined for `fclInit` above.
+
+* `devices` (`type(fclDevice)`, `allocatable`): an array of devices allocated on assignment.
+
+* `ctx` (`type(fclContext)`, `optional`): the context from which to query available devices. The __default context__ is used if this argument is omitted.
 
 __Example:__
 List CPUs in context `ctx` sorted (descending) by number of cores:
@@ -136,13 +179,14 @@ From this list we can choose the first one or more devices as required.
 
 We can further query device properties using `fclGetDeviceInfo` (this requires inclusion of the `clfortran` module which defines values for the property `key` argument).
 
+
 __API ref:__
 [fclFindDevices](https://lkedward.github.io/focal-api/interface/fclfinddevices.html),
 [fclGetDeviceInfo](https://lkedward.github.io/focal-api/interface/fclgetdeviceinfo.html)
 [fclDevice](https://lkedward.github.io/focal-api/type/fcldevice.html)
 
 
-## 5. Creating a command queue
+## 2. Creating a command queue
 Once a context created, and a device selected (see above) we can create an OpenCL command queue; all device actions are submitted via command queues.
 Command queues are associated with individual devices where one device can have multiple command queues (but not vice versa).
 Command queues are created using the `fclCreateCommandQ` function.
@@ -150,27 +194,33 @@ Command queues are created using the `fclCreateCommandQ` function.
 __Interface__
 
 ```fortran
-<fclCommandQ> = fclCreateCommandQ(<fclContext>,<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>, &
-                                     blockingWrite=<logical>,blockingRead=<logical>)
-<fclCommandQ> = fclCreateCommandQ(<fclDevice>,enableProfiling=<logical>,outOfOrderExec=<logical>, &
-                                     blockingWrite=<logical>,blockingRead=<logical>)
+cmdq = fclCreateCommandQ(ctx,device,[enableProfiling],[outOfOrderExec], &
+                           [blockingRead], [blockingWrite])
+cmdq = fclCreateCommandQ(device,[enableProfiling],[outOfOrderExec], &
+                           [blockingRead], [blockingWrite])
 ```
-If no context is specified, then the default context is used.
 
-Arguments `enableProfiling`, `outOfOrderExec`, `blockingWrite` and `blockingRead` are optional.
+* `cmdq` (`type(fclCommandQ)`): the created command queue object
 
-`enableProfiling`, `outOfOrderExec` are disabled (`.false.`) by default;
- profiling is disabled and command queue execution is __in-order__.
+* `ctx` (`type(fclContext)`,`optional`), the context associated with `device`. If no context is specified, then the default context is used.
 
- `blockingWrite` and `blockingRead` are enabled (`.true.`) by default: host array transfers will block on the host.
+* `device` (`type(fclDevice)`): the device on which to create the command queue.
+
+* `enableProfiling` (`logical`,`optional`): whether to enable event profiling on this command queue, default `.false.`
+
+* `outOfOrderExec` (`logical`,`optional`): whether to enable out-of-order execution on this command queue, default `.false.`
+
+* `blockingRead` (`logical`,`optional`): whether memory read operations are host-blocking on this command queue, default `.true.`
+
+* `blockingWRite` (`logical`,`optional`): whether memory write operations are host-blocking on this command queue, default `.true.`
 
 __Example:__
-Create command queue on first device in `devices` list.
+Create command queue on first device in `devices` list with profiling enabled.
 
 ```fortran
 type(fclCommandQ) :: cmdq
 ...
-cmdq = fclCreateCommandQ(devices(1))
+cmdq = fclCreateCommandQ(devices(1),enableProfiling=.true.)
 ```
 
 __API ref:__

@@ -1,13 +1,20 @@
 site_name: Focal Documentation
 site_url: https://lkedward.github.io/focal-docs
+repo_url: 'https://github.com/LKedward/focal'
 theme:
-  name: mkdocs
-  highlightjs: true
-  hljs_languages:
-    - fortran
-    - shell
+  name: 'material'
+  # feature:
+  #   tabs: true
+  logo: 
+    icon: 'memory'
+  # highlightjs: true
+  # hljs_languages:
+  #   - fortran
+  #   - shell
 markdown_extensions:
   - admonition
+  - codehilite
+    # linenums: true
 nav:
 - Home: 'index.md'
 - Getting started:
@@ -22,5 +29,6 @@ nav:
     - profiling.md
     - errors.md
 - About:
+    - contributing.md
     - about.md
 - API Reference >: 'https://lkedward.github.io/focal-api'

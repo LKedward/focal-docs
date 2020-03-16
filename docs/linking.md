@@ -23,13 +23,7 @@ $> gfortran -c myprogram.f90 -I/path/to/focal/mod/ -o myprogram.o
 To link, you need to specify the path to the Focal repository and directives for `Focal` and `OpenCL`:
 
 ```shell
-$> gfortran myprogram.o -L/path/to/focal/lib/ -lfocal -lOpenCL -o bin/myprogram
-```
-
-If the compiler cannot find `-lOpenCL` then you will additionally need to point the compiler to the relevant OpenCL SDK library file (`libOpenCL.dll/.so`):
-
-```shell
-$> gfortran myprogram.f90 -L/path/to/focal/lib/ -lfocal -L/path/to/OpenCL/lib/ -lOpenCL -o myprogram
+$> gfortran myprogram.o -L/path/to/focal/lib/ -lFocal -lOpenCL -o bin/myprogram
 ```
 
 See examples in the repository for how this can be done with a `makefile`.

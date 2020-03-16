@@ -13,22 +13,10 @@ The aims for Focal in particular are to:
 
 Focal supports a subset of OpenCL v1.2 features.
 
-## Project status
-
-The Focal project is __Beta__ development:
-
-* All major features are implemented and documented
-
-ToDo:
-
-* User events
-* Sub-buffer creation
-* Device partitions
-* CMake build
-* Quick reference card
 
 ## See also
-
+* [Lattice Boltzmann demo](https://github.com/LKedward/lbm2d_opencl)
+* [Oclgrind](https://github.com/jrprice/Oclgrind) (OpenCL device simulator and debugger)
 * [Khronos group](https://www.khronos.org/opencl/)
 * [International workshop on OpenCL](https://www.iwocl.org/)
 * [OpenCL specification](https://www.khronos.org/registry/OpenCL/specs/opencl-1.2.pdf)
