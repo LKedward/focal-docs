@@ -28,6 +28,7 @@ nav:
     - events.md
     - profiling.md
     - errors.md
+    - advanced.md
 - About:
     - contributing.md
     - about.md

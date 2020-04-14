@@ -34,6 +34,8 @@ __API ref:__
 
 ## 2. Host synchronisation
 
+### 2.1 Waiting for events
+
 To wait on the host for device events to complete, use the `fclWait` command.
 This command has multiple interfaces defined below.
 
@@ -101,33 +103,15 @@ __API ref:__
 
 
 
+## 3. Dependencies and barriers
 
-## 3. Out-of-order execution and barriers
-
-If a device supports it, then a command queue can be created with __out-of-order execution__ enabled which allows it to dynamically schedule enqueued kernels for maximum device utilisation.
-
-__Example:__
-Create a command queue with out-of-order execution
-
-```fortran
-type(fclCommandQ) :: cmdq
-...
-cmdq = fclCreateCommandQ(devices(1),outOfOrderExec=.true.)
-```
-
-This means that kernels and enqueued data transfers are not guaranteed to start and finish execution in the order that they were enqueued.
-To control kernel and data dependencies in an out-of-order command queue, two mechanisms are available: barriers and event dependencies.
-
-
-__API ref:__
-[fclCreateCommandQ](https://lkedward.github.io/focal-api/interface/fclcreatecommandq.html),
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html)
-
+If using a single command queue with out-of-order execution disabled, then commands are guaranteed to be executed in the order that they were enqueued.
+When using multiple command queues to submit work, or when using command queues with out-of-order execution enabled, then explicit management of dependencies is required
+to ensure that work is performed in the correct order; two useful mechanisms are available for this: barriers and event dependencies.
 
 ### 3.1 Event dependencies
 
 Event dependencies are set prior to enqueueing an operation to specify operations that must first complete for the following operation to start.
-Dependencies are only required for when using out-of-order command queues; in-order command queues (default) guarantee that commands are executed in the order that they were enqueued.
 The Focal command `fclSetDependency` is used to specify dependencies for the next enqueued operation.
 
 __Example:__
@@ -135,17 +119,30 @@ A kernel event depends on previous data transfers
 
 ```fortran
 type(fclDeviceFloat) :: deviceArray1, deviceArray2
-type(fclKernel) :: myKernel
+type(fclKernel) :: myKernel1, myKernel2
 type(fclEvent) :: e(2)
+type(fclCommandQ) :: cmdq2
 ...
+call fclSetDefaultCommandQ( fclCreateCommandQ(devices(1),blockingWrite=.false.) )
+cmdq2 = fclCreateCommandQ(devices(1))
+
 deviceArray1 = hostArray
 e(1) = fclLastWriteEvent         ! Save first write event
 deviceArray2 = hostArray
 e(2) = fclLastWriteEvent         ! Save second write event
 ...
-call fclSetDependency(e)         ! Kernel launch depends on events in e
-myKernel%launch(deviceArray1, deviceArray2)
+! Launch kernel with no dependencies on separate cmdq
+myKernel1%launch(cmdq2)
+...
+! Launch kernel with dependency on events in e
+call fclSetDependency(e)         
+myKernel2%launch(deviceArray1, deviceArray2)
 ```
+
+In this example several host-to-device transfers are enqueued followed immediately by an independent kernel execution;
+this first kernel can theoretically be executed at the same time as the transfers are occuring.
+A second kernel is enqueued with explicit dependencies on the previous transfers; this kernel won't execute until
+the transfers are complete.
 
 !!! note
     Unless `hold=.true.` is specified in `fclSetDependency` then, dependencies are cleared after each enqueued operations.
@@ -203,7 +200,7 @@ Wait on a group of asynchronous transfers to complete
 type(fclCommandQ) :: cmdq
 type(fclDeviceFloat) :: a, b, c
 ...
-cmdq = fclCreateCommandQ(devices(1),outOfOrderExec=.true.,blockingWrite=.false.)
+cmdq = fclCreateCommandQ(devices(1),blockingWrite=.false.)
 ...
 ! Enqueue asynchronous transfers to device
 a = hostA   
@@ -227,3 +224,33 @@ __API ref:__
 [fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
 [fclLastBarrierEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
+
+
+### 3.3 User events
+
+OpenCL user events provide a way for device operations to wait for the completion of host operations.
+A user event is first created which can be used as a dependency for subsequently enqued device operations.
+The host program can then trigger the user event to signal its completion and allow it dependents to start executing.
+
+__Example:__
+
+```fortran
+type(fclEvent) :: myHostEvent
+type(fclKernel) :: myKernel
+...
+! Create user event
+myHostEvent = fclCreateUserEvent()
+
+! Set dependency on user event
+call fclSetDependency(myHostEvent)
+call myKernel%launch()
+... ! Do some other work
+
+! Trigger user event to signal completion
+call fclSetUserEvent(myHostEvent)
+! Kernel will now run
+```
+
+__API ref:__
+[fclCreateUserEvent](https://lkedward.github.io/focal-api/interface/fclcreateuserevent.html),
+[fclSetUserEvent](https://lkedward.github.io/focal-api/interface/fclsetuserevent.html)

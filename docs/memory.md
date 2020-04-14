@@ -2,6 +2,11 @@
 
 See [setup](../setup) first for how to define a context and create a device command queue.
 
+__See also in [advanced topics](../advanced):__
+
+* [Sub-buffers](../advanced#1-sub-buffers)
+* [Pinned host memory](../advanced#2-pinned-host-memory)
+
 ## 1. Initialise device memory
 
 Initialisation of device memory requires a dimension (number of elements) and logicaleans indicating the read/write access of kernels.
@@ -28,6 +33,10 @@ All buffer operations will occur on this command queue. `cmdQ` can be omitted if
 - `profileName` (`character(*)`, `optional`): descriptive name for printing profiling information. See [profiling](../profiling).
 
 - `access` (one of `'r'`, `'w'`, `'rw'`, `optional`): kernel read/write access to buffer, default `'rw'`.
+
+!!! note
+    All buffer operations are submitted to the command queue specified at buffer initialisation. To change the command
+    queue associated with a buffer use the syntax: `buffer%cmdq => newCmdQ`.
 
 __Example:__
 read-only integer buffer with 1000 elements
@@ -212,53 +221,5 @@ call fclFreeBuffer(deviceArray)
 
 __API ref:__
 [fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)
-
-
-## 7. Allocate pinned host memory
-
-*Pinned* memory refers to non-pageable memory allocated on the host; this memory can be accessed more directly by devices
-since it is guaranteed not to have been '*paged-out*' by the host operating system.
-Pinned memory therefore allows for both faster host-device transfers as well as being __required for asynchronous transfers__.
-
-Pinned memory is implemented in OpenCL using the [clEnqueueMapBuffer](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clEnqueueMapBuffer.html) command
-which maps an region of allocated '*host accessible*' memory to the host address space and returns a pointer to the host address.
-
-To use pinned host memory in Focal, simply replace a standard dynamic allocation (*e.g.* `allocate(hostArray(N))`) with the `fclAllocHost` command:
-
-__Interfaces:__
-
-```fortran
-call fclAllocHost(cmdQ,ptr,dim)
-call fclAllocHost(ptr,dim)
-```
-
-`cmdQ` is the command queue onto which to enqueue the OpenCL map command.
-As usual, when `cmdQ` is not specified the default command queue is assumed.
-
-`ptr` is one of:
-
-* `real(sp), pointer, dimension(:)`
-* `real(sp), pointer, dimension(:,:)`
-* `real(dp), pointer, dimension(:)`
-* `real(dp), pointer, dimension(:,:)`
-* `integer, pointer, dimension(:)`
-* `integer, pointer, dimension(:,:)`
-
-where `sp` and `dp` refer to single precision and double precision kinds respectively.
-Note that once allocated, `ptr` can be treated as any other `allocatable` fortran array except that it cannot be deallocated using `deallocate`.
-
-`dim` is the number of elements for which to allocate space for.
-
-!!! note
-    `fclAllocHost` is a blocking command: execution pauses on the host until the OpenCL map command has completed.
-
-__Example:__
-Allocate a one-dimensional float array of ten elements using pinned memory on the default command queue.
-
-```fortran
-real, pointer :: pinnedArray(:)
-...
-call fclAllocHost(pinnedArray,10)
-```
 
 

@@ -2,6 +2,10 @@
 
 See [setup](../setup) and [memory](../memory) first for how to setup contexts, command queues and manage device memory.
 
+__See also in [advanced topics](../advanced):__
+
+* [Local kernel arguments](../advanced#3-local-kernel-arguments)
+
 ## 1. Loading kernel sources
 
 OpenCL kernels are almost always shipped as plain text sources which are compiled at runtime for the required architecture;
@@ -124,9 +128,9 @@ kern%work_dim = 3
 kern%global_work_offset = [0, 0, 0]
 ```
 
-!!! note
+!!! warning
     When kernels are launched, the `global_work_size` is automatically modified to ensure it is a multiple of `local_work_size` in
-    all dimensions by increasing it where necessary.
+    all dimensions by increasing it where necessary - make sure to guard against out-of-bounds thread indexes within your kernels.
 
 __Example__
 
@@ -190,50 +194,4 @@ __API ref:__
 [fclSetKernelArg](https://lkedward.github.io/focal-api/interface/fclsetkernelarg.html),
 [fclSetKernelArgs](https://lkedward.github.io/focal-api/interface/fclsetkernelargs.html)
 
-### 3.1 Kernel dimensions
-We can launch 2 and 3 dimensional work arrays by specifying the number of dimensions of the range, and the dimension sizes:
 
-```fortran
-myKernel%dim = 2
-myKernel%global_work_size(1:2) = [1000, 5000]
-```
-
-We can also specify the dimensions of the local work groups:
-
-```fortran
-myKernel%local_work_size=[20, 50]
-```
-
-
-### 3.2 Local memory arguments
-
-If a kernel has a local memory argument, then the functions `fclLocalInt32`, `fclLocalFloat` and `fclLocalDouble` can be used to
-supply an argument with a specific dimension.
-Local memory arguments don't pass data to the kernel, they act like temporary variable length arrays where the size of the array can be specified at kernel launch time.
-
-__Example__
-
-The following OpenCL kernel has a local memory argument as the third argument:
-
-```c
-__kernel void myKernel(const int size, __global float * vec, __local float * temp){
-  int ii = get_global_id(0);
-  int jj = get_local_id(0);
-  temp[jj] = vec[ii]
-  ...
-}
-```
-
-To launch this kernel with Focal, we use:
-
-```fortran
-myKernel%launch(nElem,deviceArray, fclLocalFloat(localSize) )
-```
-
-where `localSize` specifies the size of the local argument float array.
-
-__API ref:__
-[fclLocalInt32](https://lkedward.github.io/focal-api/interface/fcllocalint32.html),
-[fclLocalFloat](https://lkedward.github.io/focal-api/interface/fcllocalfloat.html),
-[fclLocalDouble](https://lkedward.github.io/focal-api/interface/fcllocaldouble.html),
-[fclLocalArgument](https://lkedward.github.io/focal-api/type/fcllocalargument.html),

@@ -228,7 +228,7 @@ __API ref:__
 [fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html)
 
 
-### 5.1 The default command queue
+### 2.1 The default command queue
 
 Once created, the resulting command queue object (called `cmdq` above) is used in subsequent Focal calls to indicate which device to use.
 In a similar way to the default context, a *default command queue* is provided to allow subsequent focal calls to omit the command queue object.
@@ -243,3 +243,54 @@ call fclSetDefaultCommandQ( fclCreateCommandQ(devices(1)) )
 __API ref:__
 [fclSetDefaultCommandQ](https://lkedward.github.io/focal-api/interface/fclsetdefaultcommandq.html),
 [fclDefaultCommandQ](https://lkedward.github.io/focal-api/module/focal.html#variable-fcldefaultcmdq)
+
+
+### 2.2 Command queue pools
+
+Many devices support multiple harware queues which allow different kernel and memory operations to be processed
+concurrently; this is particularly important when wanting to overlap memory transfers with compute operations or when individual
+compute kernels do not fully utilise the device compute units.
+
+OpenCL allows multiple command queues to be created for a single device; if the device supports multiple hardware queues, then the OpenCL 
+command queues will map in some way to the available hardware queues. If not supported then the command queue work will be serialised on the device
+
+!!! note
+    You can use the [tracing](../profiling/#14-generate-a-chrome-tracing-file) functionality to visually check for kernel/memory runtime concurrency.
+
+Focal provides a `fclCommandQPool` type which performs simple round-robin scheduling across multiple command queues.
+To create a command queue pool we can use the `fclCreateCommandQPool` command which accepts the same arguments are `fcCreateCommandQ` in 
+addition to an argument `N` specifying the number of command queues to create.
+
+__Interface__
+
+```fortran
+cmdq = fclCreateCommandQPool(ctx,N,device,[enableProfiling],[outOfOrderExec], &
+                           [blockingRead], [blockingWrite])
+cmdq = fclCreateCommandQPool(N,device,[enableProfiling],[outOfOrderExec], &
+     
+```
+
+* `N` (`integer`): number of command queues to create within command queue pool.
+
+Once created we can use the methods `next()` and `current()` to return the next scheduled or currently selected command queues respectively.
+
+__Example:__
+
+```fortran
+type(fclCommandQPool) :: qPool
+...
+qPool = fclCreateCommandQPool(3,device)
+
+do i=1,3
+  kernel1%launch(qPool%next(),data(i))
+  kernel2%launch(qPool%current(),data(i))
+end do
+```
+
+In this example we launch two sequential kernels three times on three different command queues for three different 
+sets of data. Note that the second kernel launches on the same queue as the first kernel and will hence be launched in
+sequence, but each iteration of the do loop increments the current queue using the `next()` method.
+
+__API ref:__
+[fclCreateCommandQPool](https://lkedward.github.io/focal-api/interface/fclcreatecommandqpool.html),
+[fclCommandQPool](https://lkedward.github.io/focal-api/type/fclcommandqpool.html)

@@ -75,7 +75,7 @@ __API ref:__
 
 ## 2. Runtime debug checks
 
-To enable runtime debug checks, replace the link flag `-lfocal` with `-lfocaldbg` when [linking](../linking) your program.
+To enable runtime debug checks, replace the link flag `-lFocal` with `-lFocaldbg` when [linking](../linking) your program.
 
 The following runtime checks are performed when using the debug build:
 
