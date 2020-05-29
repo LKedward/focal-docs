@@ -35,7 +35,7 @@ call fclSourceFromFile(filename='programKernels.cl',programSource)
 In this example, kernel source code is read from the file `programKernels.cl` into the character string `programSource` which is allocated during the call.
 
 __API ref:__
-[fclSourceFromFile](https://lkedward.github.io/focal-api/interface/fclsourcefromfile.html)
+[fclSourceFromFile](https://lkedward.github.io/focal/interface/fclsourcefromfile.html)
 
 ### 1.2 From linked binary resource
 
@@ -70,7 +70,7 @@ call fclGetKernelResource(programSource)
 See the examples [makefile](https://github.com/LKedward/focal/blob/master/examples/makefile) in the repository for how this can be done during the build process.
 
 __API ref:__
-[fclGetKernelResource](https://lkedward.github.io/focal-api/interface/fclgetkernelresource.html)
+[fclGetKernelResource](https://lkedward.github.io/focal/interface/fclgetkernelresource.html)
 
 ## 2. Compiling kernels
 
@@ -144,10 +144,10 @@ myKernel = fclGetProgramKernel(program,'myKernel')
 ```
 
 __API ref:__
-[fclCompileProgram](https://lkedward.github.io/focal-api/interface/fclcompileprogram.html),
-[fclGetProgramKernel](https://lkedward.github.io/focal-api/interface/fclgetprogramkernel.html),
-[fclProgram](https://lkedward.github.io/focal-api/type/fclprogram.html),
-[fclKernel](https://lkedward.github.io/focal-api/type/fclkernel.html)
+[fclCompileProgram](https://lkedward.github.io/focal/interface/fclcompileprogram.html),
+[fclGetProgramKernel](https://lkedward.github.io/focal/interface/fclgetprogramkernel.html),
+[fclProgram](https://lkedward.github.io/focal/type/fclprogram.html),
+[fclKernel](https://lkedward.github.io/focal/type/fclkernel.html)
 
 
 
@@ -188,10 +188,10 @@ myKernel%launch(nElem,deviceArray)
 
 
 __API ref:__
-[fclKernel](https://lkedward.github.io/focal-api/type/fclkernel.html),
-[fclLaunchKernel](https://lkedward.github.io/focal-api/interface/fcllaunchkernel.html),
-[fclLaunchKernelAfter](https://lkedward.github.io/focal-api/interface/fcllaunchkernelafter.html)
-[fclSetKernelArg](https://lkedward.github.io/focal-api/interface/fclsetkernelarg.html),
-[fclSetKernelArgs](https://lkedward.github.io/focal-api/interface/fclsetkernelargs.html)
+[fclKernel](https://lkedward.github.io/focal/type/fclkernel.html),
+[fclLaunchKernel](https://lkedward.github.io/focal/interface/fcllaunchkernel.html),
+[fclLaunchKernelAfter](https://lkedward.github.io/focal/interface/fcllaunchkernelafter.html)
+[fclSetKernelArg](https://lkedward.github.io/focal/interface/fclsetkernelarg.html),
+[fclSetKernelArgs](https://lkedward.github.io/focal/interface/fclsetkernelargs.html)
 
 

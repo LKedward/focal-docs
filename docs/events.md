@@ -25,8 +25,8 @@ The following event objects are made available following certain enqueing operat
 | Enqueue queue barrier                | `fclLastBarrierEvent`<br>`cmdq%lastBarrierEvent` | `call fclBarrier(...)`           |
 
 __API ref:__
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
-[fclLastWriteEvent, fclLastReadEvent, fclLastCopyEvent, fclLastKernelEvent, fclLastBarrierEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
+[fclCommandQ](https://lkedward.github.io/focal/type/fclcommandq.html),
+[fclLastWriteEvent, fclLastReadEvent, fclLastCopyEvent, fclLastKernelEvent, fclLastBarrierEvent](https://lkedward.github.io/focal/module/focal.html#variable-fcllastwriteevent)
 
 
 
@@ -99,7 +99,7 @@ call fclWait(e)                ! Now wait for transfers to complete
 ```
 
 __API ref:__
-[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
+[fclWait](https://lkedward.github.io/focal/interface/fclwait.html)
 
 
 
@@ -169,8 +169,8 @@ call fclClearDependencies()          ! Clear held dependencies
 
 
 __API ref:__
-[fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
-[fclClearDependencies](https://lkedward.github.io/focal-api/interface/fclcleardependencies.html)
+[fclSetDependency](https://lkedward.github.io/focal/interface/fclsetdependency.html),
+[fclClearDependencies](https://lkedward.github.io/focal/interface/fclcleardependencies.html)
 
 
 ### 3.2 Command queue barriers
@@ -219,11 +219,11 @@ call fclSetDependency(cmdq%fclLastBarrierEvent)
 ```
 
 __API ref:__
-[fclBarrier](https://lkedward.github.io/focal-api/interface/fclbarrier.html),
-[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html),
-[fclSetDependency](https://lkedward.github.io/focal-api/interface/fclsetdependency.html),
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
-[fclLastBarrierEvent](https://lkedward.github.io/focal-api/module/focal.html#variable-fcllastwriteevent)
+[fclBarrier](https://lkedward.github.io/focal/interface/fclbarrier.html),
+[fclWait](https://lkedward.github.io/focal/interface/fclwait.html),
+[fclSetDependency](https://lkedward.github.io/focal/interface/fclsetdependency.html),
+[fclCommandQ](https://lkedward.github.io/focal/type/fclcommandq.html),
+[fclLastBarrierEvent](https://lkedward.github.io/focal/module/focal.html#variable-fcllastwriteevent)
 
 
 ### 3.3 User events
@@ -252,5 +252,5 @@ call fclSetUserEvent(myHostEvent)
 ```
 
 __API ref:__
-[fclCreateUserEvent](https://lkedward.github.io/focal-api/interface/fclcreateuserevent.html),
-[fclSetUserEvent](https://lkedward.github.io/focal-api/interface/fclsetuserevent.html)
+[fclCreateUserEvent](https://lkedward.github.io/focal/interface/fclcreateuserevent.html),
+[fclSetUserEvent](https://lkedward.github.io/focal/interface/fclsetuserevent.html)

@@ -70,9 +70,9 @@ The Focal platform object contains fields such as `name`, `vendor`, `version`, a
 to select a particular platform.
 
 __API ref:__
-[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html),
-[fclGetPlatforms](https://lkedward.github.io/focal-api/interface/fclgetplatforms.html),
-[fclGetPlatformInfo](https://lkedward.github.io/focal-api/interface/fclgetplatforminfo.html)
+[fclPlatform](https://lkedward.github.io/focal/type/fclplatform.html),
+[fclGetPlatforms](https://lkedward.github.io/focal/interface/fclgetplatforms.html),
+[fclGetPlatformInfo](https://lkedward.github.io/focal/interface/fclgetplatforminfo.html)
 
 
 ### Create a context
@@ -135,9 +135,9 @@ devices = fclFindDevices(type='gpu')
 
 
 __API ref:__
-[fclPlatform](https://lkedward.github.io/focal-api/type/fclplatform.html),
-[fclSetDefaultContext](https://lkedward.github.io/focal-api/interface/fclsetdefaultcontext.html),
-[fclDefaultCtx](https://lkedward.github.io/focal-api/module/focal.html#variable-fcldefaultctx)
+[fclPlatform](https://lkedward.github.io/focal/type/fclplatform.html),
+[fclSetDefaultContext](https://lkedward.github.io/focal/interface/fclsetdefaultcontext.html),
+[fclDefaultCtx](https://lkedward.github.io/focal/module/focal.html#variable-fcldefaultctx)
 
 ### Query devices on the context
 
@@ -181,9 +181,9 @@ We can further query device properties using `fclGetDeviceInfo` (this requires i
 
 
 __API ref:__
-[fclFindDevices](https://lkedward.github.io/focal-api/interface/fclfinddevices.html),
-[fclGetDeviceInfo](https://lkedward.github.io/focal-api/interface/fclgetdeviceinfo.html)
-[fclDevice](https://lkedward.github.io/focal-api/type/fcldevice.html)
+[fclFindDevices](https://lkedward.github.io/focal/interface/fclfinddevices.html),
+[fclGetDeviceInfo](https://lkedward.github.io/focal/interface/fclgetdeviceinfo.html)
+[fclDevice](https://lkedward.github.io/focal/type/fcldevice.html)
 
 
 ## 2. Creating a command queue
@@ -224,8 +224,8 @@ cmdq = fclCreateCommandQ(devices(1),enableProfiling=.true.)
 ```
 
 __API ref:__
-[fclCreateCommandQ](https://lkedward.github.io/focal-api/interface/fclcreatecommandq.html),
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html)
+[fclCreateCommandQ](https://lkedward.github.io/focal/interface/fclcreatecommandq.html),
+[fclCommandQ](https://lkedward.github.io/focal/type/fclcommandq.html)
 
 
 ### 2.1 The default command queue
@@ -241,8 +241,8 @@ call fclSetDefaultCommandQ( fclCreateCommandQ(devices(1)) )
 ```
 
 __API ref:__
-[fclSetDefaultCommandQ](https://lkedward.github.io/focal-api/interface/fclsetdefaultcommandq.html),
-[fclDefaultCommandQ](https://lkedward.github.io/focal-api/module/focal.html#variable-fcldefaultcmdq)
+[fclSetDefaultCommandQ](https://lkedward.github.io/focal/interface/fclsetdefaultcommandq.html),
+[fclDefaultCommandQ](https://lkedward.github.io/focal/module/focal.html#variable-fcldefaultcmdq)
 
 
 ### 2.2 Command queue pools
@@ -292,5 +292,5 @@ sets of data. Note that the second kernel launches on the same queue as the firs
 sequence, but each iteration of the do loop increments the current queue using the `next()` method.
 
 __API ref:__
-[fclCreateCommandQPool](https://lkedward.github.io/focal-api/interface/fclcreatecommandqpool.html),
-[fclCommandQPool](https://lkedward.github.io/focal-api/type/fclcommandqpool.html)
+[fclCreateCommandQPool](https://lkedward.github.io/focal/interface/fclcreatecommandqpool.html),
+[fclCommandQPool](https://lkedward.github.io/focal/type/fclcommandqpool.html)

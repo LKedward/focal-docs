@@ -45,7 +45,7 @@ call fclInitSubBuffer(childFloat,parentFloat,5,5)
 In this example, the `childFloat` sub-buffer references the second half of the `parentFloat` buffer which contains 10 elements in total.
 
 __API ref:__
-[fclInitSubBuffer](https://lkedward.github.io/focal-api/interface/fclinitsubbuffer.html)
+[fclInitSubBuffer](https://lkedward.github.io/focal/interface/fclinitsubbuffer.html)
 
 
 ## 2. Pinned host memory
@@ -95,7 +95,7 @@ call fclAllocHost(pinnedArray,10)
 ```
 
 __API ref:__
-[fclAllocHost](https://lkedward.github.io/focal-api/interface/fclallochost.html)
+[fclAllocHost](https://lkedward.github.io/focal/interface/fclallochost.html)
 
 ### 2.2 Deallocate pinned memory
 
@@ -119,7 +119,7 @@ where `ptr` is any pointer allocated using `fclAllocHost`.
 
 
 __API ref:__
-[fclFreeHost](https://lkedward.github.io/focal-api/interface/fclfreehost.html)
+[fclFreeHost](https://lkedward.github.io/focal/interface/fclfreehost.html)
 
 
 ## 3. Local kernel arguments
@@ -150,9 +150,9 @@ myKernel%launch(nElem,deviceArray, fclLocalFloat(localSize) )
 where `localSize` specifies the size of the local argument float array.
 
 __API ref:__
-[fclLocalInt32](https://lkedward.github.io/focal-api/interface/fcllocalint32.html),
-[fclLocalFloat](https://lkedward.github.io/focal-api/interface/fcllocalfloat.html),
-[fclLocalDouble](https://lkedward.github.io/focal-api/interface/fcllocaldouble.html),
-[fclLocalArgument](https://lkedward.github.io/focal-api/type/fcllocalargument.html),
+[fclLocalInt32](https://lkedward.github.io/focal/interface/fcllocalint32.html),
+[fclLocalFloat](https://lkedward.github.io/focal/interface/fcllocalfloat.html),
+[fclLocalDouble](https://lkedward.github.io/focal/interface/fcllocaldouble.html),
+[fclLocalArgument](https://lkedward.github.io/focal/type/fcllocalargument.html),
 
 

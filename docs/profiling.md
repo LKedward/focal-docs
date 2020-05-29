@@ -31,7 +31,7 @@ profiler%device = devices(1)
 ```
 
 __API ref:__
-[fclProfiler](https://lkedward.github.io/focal-api/type/fclprofiler.html)
+[fclProfiler](https://lkedward.github.io/focal/type/fclprofiler.html)
 
 ### 1.2 Enable profiling on kernels and buffers
 
@@ -82,7 +82,7 @@ in a separate call, we enable profiling for two buffer objects with space for 10
 
 
 __API ref:__
-[fclProfilerAdd](https://lkedward.github.io/focal-api/interface/fclprofileradd.html)
+[fclProfilerAdd](https://lkedward.github.io/focal/interface/fclprofileradd.html)
 
 
 ### 1.3 Print out profiling data summary
@@ -140,7 +140,7 @@ The following is an example of output from `fclDumpProfileData`:
 
 
 __API ref:__
-[fclDumpProfileData](https://lkedward.github.io/focal-api/interface/fcldumpprofiledata.html)
+[fclDumpProfileData](https://lkedward.github.io/focal/interface/fcldumpprofiledata.html)
 
 
 ### 1.4 Generate a chrome tracing file
@@ -169,7 +169,7 @@ call fclDumpTracingData(profiler,'trace.json')
 ```
 
 __API ref:__
-[fclDumpTracingData](https://lkedward.github.io/focal-api/interface/fcldumptracingdata.html)
+[fclDumpTracingData](https://lkedward.github.io/focal/interface/fcldumptracingdata.html)
 
 ## 2. Advanced: Get timings explicitly
 
@@ -199,7 +199,7 @@ call fclEnableProfiling(myBuffer,50)
 ```
 
 __API ref:__
-[fclEnableProfiling](https://lkedward.github.io/focal-api/interface/fclenableprofiling.html)
+[fclEnableProfiling](https://lkedward.github.io/focal/interface/fclenableprofiling.html)
 
 
 ### 2.2 Extract event durations
@@ -230,4 +230,4 @@ averageTime = sum(durations)/Nprofile
 
 
 __API ref:__
-[fclGetEventDurations](https://lkedward.github.io/focal-api/interface/fclgeteventdurations.html)
+[fclGetEventDurations](https://lkedward.github.io/focal/interface/fclgeteventdurations.html)

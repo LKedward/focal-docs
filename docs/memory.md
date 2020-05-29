@@ -59,11 +59,11 @@ call fclInitBuffer(cmdq,array_d,dim=1000,profileName='array_d')
 ```
 
 __API ref:__
-[fclInitBuffer](https://lkedward.github.io/focal-api/interface/fclinitbuffer.html),
-[fclDeviceBuffer](https://lkedward.github.io/focal-api/type/fcldevicebuffer.html),
-[fclDeviceInt32](https://lkedward.github.io/focal-api/type/fcldeviceint32.html),
-[fclDeviceFloat](https://lkedward.github.io/focal-api/type/fcldevicefloat.html),
-[fclDeviceDouble](https://lkedward.github.io/focal-api/type/fcldevicedouble.html)
+[fclInitBuffer](https://lkedward.github.io/focal/interface/fclinitbuffer.html),
+[fclDeviceBuffer](https://lkedward.github.io/focal/type/fcldevicebuffer.html),
+[fclDeviceInt32](https://lkedward.github.io/focal/type/fcldeviceint32.html),
+[fclDeviceFloat](https://lkedward.github.io/focal/type/fcldevicefloat.html),
+[fclDeviceDouble](https://lkedward.github.io/focal/type/fcldevicedouble.html)
 
 
 
@@ -91,7 +91,7 @@ deviceDouble = 0.0d0
     The scalar assignment is enqueued onto the command queue and host code continues. Call `fclWait(cmdq%lastWriteEvent)` to wait.
 
 __API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html)
+[Assignment(=)](https://lkedward.github.io/focal/interface/assignment%28%3D%29.html)
 
 ## 3. Data transfer between device and host
 
@@ -137,9 +137,9 @@ call fclWait(e)                 ! Wait for event when needed
 If using the default command queue then replace `cmdq` with `fclDefaultCmdQ`.
 
 __API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html),
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
-[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
+[Assignment(=)](https://lkedward.github.io/focal/interface/assignment%28%3D%29.html),
+[fclCommandQ](https://lkedward.github.io/focal/type/fclcommandq.html),
+[fclWait](https://lkedward.github.io/focal/interface/fclwait.html)
 
 
 ## 4. Transfer device array to device array
@@ -184,9 +184,9 @@ call fclWait(fclLastCopyEvent)
 ```
 
 __API ref:__
-[Assignment(=)](https://lkedward.github.io/focal-api/interface/assignment%28%3D%29.html),
-[fclCommandQ](https://lkedward.github.io/focal-api/type/fclcommandq.html),
-[fclWait](https://lkedward.github.io/focal-api/interface/fclwait.html)
+[Assignment(=)](https://lkedward.github.io/focal/interface/assignment%28%3D%29.html),
+[fclCommandQ](https://lkedward.github.io/focal/type/fclcommandq.html),
+[fclWait](https://lkedward.github.io/focal/interface/fclwait.html)
 
 
 ## 5. Swap buffer pointers
@@ -220,6 +220,6 @@ call fclFreeBuffer(deviceArray)
 ```
 
 __API ref:__
-[fclFreeBuffer](https://lkedward.github.io/focal-api/interface/fclfreebuffer.html)
+[fclFreeBuffer](https://lkedward.github.io/focal/interface/fclfreebuffer.html)
 
 

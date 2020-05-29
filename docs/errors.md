@@ -68,10 +68,10 @@ end subroutine fclDefaultErrorHandler
 ```
 
 __API ref:__
-[fclGetErrorString](https://lkedward.github.io/focal-api/interface/fclgeterrorstring.html),
-[fclErrorHandlerInterface](https://lkedward.github.io/focal-api/interface/fclerrorhandlerinterface.html),
-[fclDefaultErrorHandler](https://lkedward.github.io/focal-api/interface/fcldefaulterrorhandler.html),
-[fclErrorHandler](https://lkedward.github.io/focal-api/module/focal.html#variable-fclerrorhandler)
+[fclGetErrorString](https://lkedward.github.io/focal/interface/fclgeterrorstring.html),
+[fclErrorHandlerInterface](https://lkedward.github.io/focal/interface/fclerrorhandlerinterface.html),
+[fclDefaultErrorHandler](https://lkedward.github.io/focal/interface/fcldefaulterrorhandler.html),
+[fclErrorHandler](https://lkedward.github.io/focal/module/focal.html#variable-fclerrorhandler)
 
 ## 2. Runtime debug checks
 
@@ -103,4 +103,4 @@ When a runtime error is detected the program is aborted immediately such that a 
 and which can be used to detect the source of the error.
 
 __API ref:__
-[fclDbgWait](https://lkedward.github.io/focal-api/interface/fcldbgwait.html)
+[fclDbgWait](https://lkedward.github.io/focal/interface/fcldbgwait.html)
