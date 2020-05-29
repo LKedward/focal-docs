@@ -7,7 +7,7 @@ Moreover, Focal introduces typed buffer objects in host code which abstracts byt
 Focal also provides a customisable error handler for OpenCL API errors as well as a [debug version](../errors#2-runtime-debug-checks) containing useful runtime checks for
 ensuring OpenCL program validity.
 
-__Project status:__ v1.0.0 Stable release
+__Project status:__ v1.0.1 Stable release
 
 __Github:__ [github.com/lkedward/focal](https://github.com/LKedward/focal)
 
