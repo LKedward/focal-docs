@@ -5,8 +5,8 @@ theme:
   name: 'material'
   # feature:
   #   tabs: true
-  logo: 
-    icon: 'memory'
+  icon: 
+    logo: material/memory
   # highlightjs: true
   # hljs_languages:
   #   - fortran
