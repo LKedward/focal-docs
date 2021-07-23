@@ -1,7 +1,7 @@
 # Building the Focal Library
 
 
-## Prerequisies
+## Prerequisites
 
 - [GNU make](https://www.gnu.org/software/make/) utility
 - Fortran compiler supporting the 2008 standard (tested regularly with `gfortran` 7.4.0 & 9.1.0 and `ifort` 19.1.0 )
