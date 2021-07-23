@@ -101,7 +101,7 @@ end program sum
 ```
 
 Where `sum.cl` contains the following openCL kernel:
-```openCL
+```c
 __kernel void sum(const int nElem, const __global float * v1, __global float * v2){
   int i = get_global_id(0);
   if(i < nElem) v2[i] += v1[i];

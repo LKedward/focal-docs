@@ -8,13 +8,10 @@ theme:
   #   tabs: true
   icon: 
     logo: material/memory
-  # highlightjs: true
-  # hljs_languages:
-  #   - fortran
-  #   - shell
+
 markdown_extensions:
-  - admonition
-  - codehilite
+  - pymdownx.highlight
+  - pymdownx.superfences
     # linenums: true
 nav:
 - Home: 'index.md'
