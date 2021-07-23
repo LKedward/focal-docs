@@ -10,6 +10,7 @@ theme:
     logo: material/memory
 
 markdown_extensions:
+  - admonition
   - pymdownx.highlight
   - pymdownx.superfences
     # linenums: true
