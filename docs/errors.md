@@ -69,7 +69,7 @@ end subroutine fclDefaultErrorHandler
 
 __API ref:__
 [fclGetErrorString](https://lkedward.github.io/focal/interface/fclgeterrorstring.html),
-[fclErrorHandlerInterface](https://lkedward.github.io/focal/interface/fclerrorhandlerinterface.html),
+[fclHandleErrorInterface](https://lkedward.github.io/focal/interface/fclhandleerrorinterface.html),
 [fclDefaultErrorHandler](https://lkedward.github.io/focal/interface/fcldefaulterrorhandler.html),
 [fclErrorHandler](https://lkedward.github.io/focal/module/focal.html#variable-fclerrorhandler)
 

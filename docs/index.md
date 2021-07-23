@@ -4,7 +4,7 @@ Focal is a modern Fortran module library which wraps calls to the OpenCL runtime
 
 In particular, Focal removes all references to c pointers and provides compact but extensible subroutine wrappers to the OpenCL runtime API.
 Moreover, Focal introduces typed buffer objects in host code which abstracts byte allocation away while providing built-in type safety.
-Focal also provides a customisable error handler for OpenCL API errors as well as a [debug version](../errors#2-runtime-debug-checks) containing useful runtime checks for
+Focal also provides a customisable error handler for OpenCL API errors as well as a [debug version](./errors#2-runtime-debug-checks) containing useful runtime checks for
 ensuring OpenCL program validity.
 
 __Project status:__ v1.0.1 Stable release
