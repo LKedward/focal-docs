@@ -1,6 +1,7 @@
 site_name: Focal Documentation
 site_url: https://lkedward.github.io/focal-docs
 repo_url: 'https://github.com/LKedward/focal'
+edit_uri: ''
 theme:
   name: 'material'
   # feature:
