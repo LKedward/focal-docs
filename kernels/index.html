@@ -1,0 +1,841 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://lkedward.github.io/focal-docs/kernels/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Working with kernels - Focal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#working-with-kernels" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Focal Documentation" class="md-header__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Focal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Working with kernels
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Focal Documentation" class="md-nav__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    Focal Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/" class="md-nav__link">
+        Building the Focal Library
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linking/" class="md-nav__link">
+        Linking Focal Programs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory/" class="md-nav__link">
+        Managing memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Working with kernels
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Working with kernels
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-loading-kernel-sources" class="md-nav__link">
+    1. Loading kernel sources
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Loading kernel sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-from-file" class="md-nav__link">
+    1.1 From file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-from-linked-binary-resource" class="md-nav__link">
+    1.2 From linked binary resource
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-compiling-kernels" class="md-nav__link">
+    2. Compiling kernels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-launching-kernels" class="md-nav__link">
+    3. Launching kernels
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        Events and synchronisation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiling/" class="md-nav__link">
+        Profiling OpenCL code in Focal
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced/" class="md-nav__link">
+        Advanced topics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://lkedward.github.io/focal" class="md-nav__link">
+        API Reference >
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-loading-kernel-sources" class="md-nav__link">
+    1. Loading kernel sources
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Loading kernel sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-from-file" class="md-nav__link">
+    1.1 From file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-from-linked-binary-resource" class="md-nav__link">
+    1.2 From linked binary resource
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-compiling-kernels" class="md-nav__link">
+    2. Compiling kernels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-launching-kernels" class="md-nav__link">
+    3. Launching kernels
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="working-with-kernels">Working with kernels</h1>
+<p>See <a href="../setup">setup</a> and <a href="../memory">memory</a> first for how to setup contexts, command queues and manage device memory.</p>
+<p><strong>See also in <a href="../advanced">advanced topics</a>:</strong></p>
+<ul>
+<li><a href="../advanced#3-local-kernel-arguments">Local kernel arguments</a></li>
+</ul>
+<h2 id="1-loading-kernel-sources">1. Loading kernel sources</h2>
+<p>OpenCL kernels are almost always shipped as plain text sources which are compiled at runtime for the required architecture;
+this allows perfect portability of programs using OpenCL kernels.</p>
+<p>Focal provides two utility routines for obtaining OpenCL kernel source code at runtime:</p>
+<ul>
+<li><code>fclSourceFromFile</code> which loads source code from a file path</li>
+<li><code>fclGetKernelResource</code> which loads source code that was linked at compile time as a binary resource.</li>
+</ul>
+<p>Loading source using <code>fclSourceFromFile</code> from allows kernel sources to be updated without recompilation however it relies on robustly being able to locate kernel source files at runtime.</p>
+<p>Linking source code as a binary resource allows kernel sources to be included into the program executable and therefore doesn't require source files to be distributed in addition to the OpenCL program.</p>
+<h3 id="11-from-file">1.1 From file</h3>
+<p>Use <code>fclSourceFromFile</code> to load source code from a file at runtime.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kt">character</span><span class="p">(:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">programSource</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclSourceFromFile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;programKernels.cl&#39;</span><span class="p">,</span><span class="n">programSource</span><span class="p">)</span>
+</code></pre></div>
+<p>In this example, kernel source code is read from the file <code>programKernels.cl</code> into the character string <code>programSource</code> which is allocated during the call.</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclsourcefromfile.html">fclSourceFromFile</a></p>
+<h3 id="12-from-linked-binary-resource">1.2 From linked binary resource</h3>
+<p><strong>Step 1:</strong>
+Create object file from kernel code.</p>
+<p>At the command line we use the linker <code>ld</code> to convert the kernel text file <code>fclKernels.cl</code> into a binary resource object:</p>
+<div class="highlight"><pre><span></span><code>$&gt; ld -r -b binary fclKernels.cl -o fclKernels.o
+</code></pre></div>
+<p>In the call to <code>ld</code> the output binary file can have any arbitrary name, however the input file, containing the kernels source text, <strong>MUST be called <code>fclKernels.cl</code> with no path prefix</strong>.</p>
+<p><strong>Step 2:</strong>
+Compile and link the main program with the <code>fclKernels.o</code> resource object:</p>
+<div class="highlight"><pre><span></span><code>$&gt; gfortran -c myCLProgram.f90 -o myCLProgram.o
+$&gt; gfortran myCLProgram.o fclKernels.o -lfocal -lOpenCL -o myCLProgram
+</code></pre></div>
+<p><strong>Step 3:</strong>
+Load the linked kernel source at runtime using <code>fclGetKernelResource</code></p>
+<div class="highlight"><pre><span></span><code><span class="kt">character</span><span class="p">(:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">programSource</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclGetKernelResource</span><span class="p">(</span><span class="n">programSource</span><span class="p">)</span>
+</code></pre></div>
+<p>See the examples <a href="https://github.com/LKedward/focal/blob/master/examples/makefile">makefile</a> in the repository for how this can be done during the build process.</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclgetkernelresource.html">fclGetKernelResource</a></p>
+<h2 id="2-compiling-kernels">2. Compiling kernels</h2>
+<p>Once kernel source code has been loaded into a character string (<code>character(len=n)</code>), the code can be compiled using <code>fclCompileProgram</code>.
+An OpenCL 'program' simply refers to a collection of kernels. So we can collect all our kernels into a single character string and compile them together.</p>
+<p><strong>Interfaces</strong></p>
+<p><div class="highlight"><pre><span></span><code><span class="n">prog</span> <span class="o">=</span> <span class="n">fclCompileProgram</span><span class="p">([</span><span class="n">ctx</span><span class="p">],</span><span class="n">source</span><span class="p">,[</span><span class="k">options</span><span class="p">])</span>
+</code></pre></div>
+* <code>prog</code> (<code>type(fclProgram)</code>): compiled program object</p>
+<ul>
+<li>
+<p><code>ctx</code> (<code>type(fclContext)</code>,<code>optional</code>): context on which to compile program. Default context is used if omitted.</p>
+</li>
+<li>
+<p><code>source</code> (<code>character(*)</code>): the OpenCL program source code to compile</p>
+</li>
+<li>
+<p><code>options</code> (<code>character(*)</code>,<code>optional</code>): specifies <a href="https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clBuildProgram.html#notes">OpenCL compilation options</a>.</p>
+</li>
+</ul>
+<p>Once compiled, a specific Focal kernel object can be extracted from the compiled program object using <code>fclGetProgramKernel</code>.
+This returns an <code>fclKernel</code> object which we can use to launch a specific kernel.</p>
+<p><strong>Interfaces</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">kern</span> <span class="o">=</span> <span class="n">fclGetProgramKernel</span><span class="p">(</span><span class="n">prog</span><span class="p">,</span><span class="n">kernelName</span><span class="p">,[</span><span class="n">global_work_size</span><span class="p">],[</span><span class="n">local_work_size</span><span class="p">],</span> <span class="p">&amp;</span>
+                                             <span class="p">[</span><span class="n">work_dim</span><span class="p">],[</span><span class="n">global_work_offset</span><span class="p">])</span>
+</code></pre></div>
+<ul>
+<li>
+<p><code>kern</code> (<code>type(fclKernel)</code>): kernel object used to launch kernels</p>
+</li>
+<li>
+<p><code>prog</code> (<code>type(fclProgram)</code>): program object containing compiled kernels</p>
+</li>
+<li>
+<p><code>kernelName</code> (<code>character(*)</code>): case-sensitive kernel function name</p>
+</li>
+<li>
+<p><code>global_work_size</code> (<code>integer(dim)</code>,<code>optional</code>) array (up to length 3) specifying global work dimensions. Default unset.
+If specified, also automatically sets <code>work_dim</code> to the length of <code>global_work_size</code>.</p>
+</li>
+<li>
+<p><code>local_work_size</code> (<code>integer(dim)</code>,<code>optional</code>) array (up to length 3) specifying local work group dimensions.
+Default [0,0,0] meaning OpenCL sets the local work dimensions.</p>
+</li>
+<li>
+<p><code>work_dim</code> (<code>integer</code>,<code>optional</code>) specifies number of work group dimensions.
+Default 1 or length of <code>global_work_size</code> if specified.</p>
+</li>
+<li>
+<p><code>global_work_offset</code> (<code>integer(dim)</code>,<code>optional</code>) array specifying global work offsets in each dimension, default [0,0,0]</p>
+</li>
+</ul>
+<p>The kernel parameters <code>global_work_size</code>, <code>local_work_size</code>, <code>work_dim</code>, and <code>global_work_offset</code> can also be set using the
+syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="n">kern</span><span class="p">%</span><span class="n">global_work_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">kern</span><span class="p">%</span><span class="n">local_work_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">kern</span><span class="p">%</span><span class="n">work_dim</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">kern</span><span class="p">%</span><span class="n">global_work_offset</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When kernels are launched, the <code>global_work_size</code> is automatically modified to ensure it is a multiple of <code>local_work_size</code> in
+all dimensions by increasing it where necessary - make sure to guard against out-of-bounds thread indexes within your kernels.</p>
+</div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclProgram</span><span class="p">)</span> <span class="kd">::</span> <span class="k">program</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclKernel</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myKernel</span>
+<span class="p">...</span>
+<span class="k">program</span> <span class="o">=</span> <span class="n">fclCompileProgram</span><span class="p">(</span><span class="n">myProgramSource</span><span class="p">)</span>
+<span class="n">myKernel</span> <span class="o">=</span> <span class="n">fclGetProgramKernel</span><span class="p">(</span><span class="k">program</span><span class="p">,</span><span class="s1">&#39;myKernel&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclcompileprogram.html">fclCompileProgram</a>,
+<a href="https://lkedward.github.io/focal/interface/fclgetprogramkernel.html">fclGetProgramKernel</a>,
+<a href="https://lkedward.github.io/focal/type/fclprogram.html">fclProgram</a>,
+<a href="https://lkedward.github.io/focal/type/fclkernel.html">fclKernel</a></p>
+<h2 id="3-launching-kernels">3. Launching kernels</h2>
+<p>Once an <code>fclKernel</code> object exists, the kernel can be launched with the following syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="n">myKernel</span><span class="p">%</span><span class="n">launch</span><span class="p">(</span><span class="n">cmdq</span><span class="p">,</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
+</code></pre></div>
+<p>or equivalently:</p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclLaunchKernel</span><span class="p">(</span><span class="n">myKernel</span><span class="p">,</span><span class="n">cmdq</span><span class="p">,</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="p">)</span>
+</code></pre></div>
+<p>If the default command queue has been set, then <code>cmdq</code> can be omitted here.
+In these examples two kernel arguments are supplied <code>arg1</code> and <code>arg2</code>.
+Kernel arguments can be scalar variables, device buffer objects or local memory specifiers.
+Up to 20 kernel arguments can be specified using this syntax.</p>
+<p><strong>Example:</strong>
+Launch a kernel with a scalar integer argument and a device buffer argument.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">integer</span> <span class="kd">::</span> <span class="n">nElem</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray</span>
+<span class="p">...</span>
+<span class="n">deviceArray</span> <span class="o">=</span> <span class="n">fclBufferInt32</span><span class="p">(</span><span class="nb">dim</span><span class="o">=</span><span class="n">nElem</span><span class="p">,</span><span class="k">read</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.,</span><span class="k">write</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="n">myKernel</span><span class="p">%</span><span class="n">launch</span><span class="p">(</span><span class="n">nElem</span><span class="p">,</span><span class="n">deviceArray</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenCL kernel arguments persist between calls, therefore subsequent kernel launch calls can omit arguments if unchanged.
+Use <code>fclSetKernelArg</code> and <code>fclSetKernelArgs</code> to change a single/multiple kernel argument(s) between kernel launches.</p>
+</div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/type/fclkernel.html">fclKernel</a>,
+<a href="https://lkedward.github.io/focal/interface/fcllaunchkernel.html">fclLaunchKernel</a>,
+<a href="https://lkedward.github.io/focal/interface/fcllaunchkernelafter.html">fclLaunchKernelAfter</a>
+<a href="https://lkedward.github.io/focal/interface/fclsetkernelarg.html">fclSetKernelArg</a>,
+<a href="https://lkedward.github.io/focal/interface/fclsetkernelargs.html">fclSetKernelArgs</a></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../memory/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Managing memory" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Managing memory
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../events/" class="md-footer__link md-footer__link--next" aria-label="Next: Events and synchronisation" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Events and synchronisation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

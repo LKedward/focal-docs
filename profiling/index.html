@@ -1,0 +1,914 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://lkedward.github.io/focal-docs/profiling/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Profiling OpenCL code in Focal - Focal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#profiling-opencl-code-in-focal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Focal Documentation" class="md-header__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Focal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Profiling OpenCL code in Focal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Focal Documentation" class="md-nav__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    Focal Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/" class="md-nav__link">
+        Building the Focal Library
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linking/" class="md-nav__link">
+        Linking Focal Programs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory/" class="md-nav__link">
+        Managing memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernels/" class="md-nav__link">
+        Working with kernels
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        Events and synchronisation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Profiling OpenCL code in Focal
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Profiling OpenCL code in Focal
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-standard-use-a-profiler-object" class="md-nav__link">
+    1. Standard: Use a profiler object
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Standard: Use a profiler object">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-define-a-profiler" class="md-nav__link">
+    1.1 Define a profiler
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-enable-profiling-on-kernels-and-buffers" class="md-nav__link">
+    1.2 Enable profiling on kernels and buffers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-print-out-profiling-data-summary" class="md-nav__link">
+    1.3 Print out profiling data summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-generate-a-chrome-tracing-file" class="md-nav__link">
+    1.4 Generate a chrome tracing file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-advanced-get-timings-explicitly" class="md-nav__link">
+    2. Advanced: Get timings explicitly
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Advanced: Get timings explicitly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-enable-profiling-without-a-profiler-object" class="md-nav__link">
+    2.1 Enable profiling without a profiler object
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-extract-event-durations" class="md-nav__link">
+    2.2 Extract event durations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced/" class="md-nav__link">
+        Advanced topics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://lkedward.github.io/focal" class="md-nav__link">
+        API Reference >
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-standard-use-a-profiler-object" class="md-nav__link">
+    1. Standard: Use a profiler object
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Standard: Use a profiler object">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-define-a-profiler" class="md-nav__link">
+    1.1 Define a profiler
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-enable-profiling-on-kernels-and-buffers" class="md-nav__link">
+    1.2 Enable profiling on kernels and buffers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-print-out-profiling-data-summary" class="md-nav__link">
+    1.3 Print out profiling data summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-generate-a-chrome-tracing-file" class="md-nav__link">
+    1.4 Generate a chrome tracing file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-advanced-get-timings-explicitly" class="md-nav__link">
+    2. Advanced: Get timings explicitly
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Advanced: Get timings explicitly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-enable-profiling-without-a-profiler-object" class="md-nav__link">
+    2.1 Enable profiling without a profiler object
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-extract-event-durations" class="md-nav__link">
+    2.2 Extract event durations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="profiling-opencl-code-in-focal">Profiling OpenCL code in Focal</h1>
+<p>OpenCL has a built in event profiling functionality whereby timings are available for enqueued operations.
+This functionality can be handled automatically in Focal by enabling profiling on kernel and buffer objects.
+When enabled, kernel launch events and buffer transfer events are 'recorded' for which timing information can be
+later extracted and processed.</p>
+<p><strong>Example program:</strong> <a href="https://github.com/LKedward/focal/blob/master/examples/nbody.f90">nbody.f90</a></p>
+<h2 id="1-standard-use-a-profiler-object">1. Standard: Use a profiler object</h2>
+<p>An <code>fclProfiler</code> type is provided to simplify the extraction of profiling data.
+This type simply represents a collection of kernels and buffers for which you wish to
+generate profiling data.
+A set of routines are provided to extract and present profiling data for all kernels
+and buffers in a particular profiler object.</p>
+<h3 id="11-define-a-profiler">1.1 Define a profiler</h3>
+<p>To start, we must define a profiler object and set the device it is associated with:</p>
+<p>Assuming we have a context <code>ctx</code> and we have a device list <code>devices</code> (see <a href="../setup/#4-querying-devices">Setup: Querying devices</a>)
+from which we are going to use the first device, then we set the profiler device as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclProfiler</span><span class="p">)</span> <span class="kd">::</span> <span class="n">profiler</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDevice</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">devices</span><span class="p">(:)</span>
+<span class="p">...</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">,</span><span class="n">sortBy</span><span class="o">=</span><span class="s1">&#39;cores&#39;</span><span class="p">)</span>
+<span class="n">profiler</span><span class="p">%</span><span class="n">device</span> <span class="o">=</span> <span class="n">devices</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/type/fclprofiler.html">fclProfiler</a></p>
+<h3 id="12-enable-profiling-on-kernels-and-buffers">1.2 Enable profiling on kernels and buffers</h3>
+<p>Once we have a profiler with an associated device and have initialised our
+kernels and buffers, we can enable profiling with the following interfaces:</p>
+<p><strong>Interface:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclProfilerAdd</span><span class="p">(</span><span class="o">&lt;</span><span class="n">fclProfiler</span><span class="o">&gt;</span><span class="p">,</span><span class="n">profileSize</span><span class="o">=&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">fclKernel</span><span class="err">|</span><span class="n">fclBuffer</span><span class="o">&gt;</span><span class="p">,...)</span>
+</code></pre></div>
+<p>or equivalently:</p>
+<div class="highlight"><pre><span></span><code><span class="k">call</span> <span class="o">&lt;</span><span class="n">fclProfiler</span><span class="o">&gt;</span><span class="p">%</span><span class="n">add</span><span class="p">(</span><span class="n">profileSize</span><span class="o">=&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">fclKernel</span><span class="err">|</span><span class="n">fclBuffer</span><span class="o">&gt;</span><span class="p">,...)</span>
+</code></pre></div>
+<p>Both interface formats are equivalent.</p>
+<ul>
+<li>
+<p><code>profileSize</code> specifies the amount of space to allocate for recording events:
+set to the number of events you wish to record.
+If more events occur than space allocated, then 'old' events are simply overridden.
+<em>i.e.</em> only the last <code>profileSize</code> events are recorded.</p>
+</li>
+<li>
+<p>Up to 10 kernel or buffer objects can be passed as arguments after <code>profileSize</code>.
+The same profile size is allocated for each kernel or buffer specified.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclProfiler</span><span class="p">)</span> <span class="kd">::</span> <span class="n">profiler</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclKernel</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myKernel1</span><span class="p">,</span> <span class="n">myKernel2</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">buffer1</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">buffer2</span>
+<span class="p">...</span>
+<span class="n">profiler</span><span class="p">%</span><span class="n">add</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">myKernel1</span><span class="p">,</span><span class="n">myKernel2</span><span class="p">)</span>
+<span class="n">profiler</span><span class="p">%</span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">buffer1</span><span class="p">,</span><span class="n">buffer2</span><span class="p">)</span>
+</code></pre></div>
+<p>In this example, we enable profiling for both kernels with space for 100 events and,
+in a separate call, we enable profiling for two buffer objects with space for 10 events.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If intending to profile a buffer object, make sure you specify a <code>profileName</code>
+when <a href="../memory/#1-initialise-device-memory">initialising</a> the buffer so that
+the profiler can print it in the output.</p>
+</div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclprofileradd.html">fclProfilerAdd</a></p>
+<h3 id="13-print-out-profiling-data-summary">1.3 Print out profiling data summary</h3>
+<p>Once your OpenCL program has completed and all events are finished (see <a href="../events#2-host-synchronisation">host synchronisation</a>),
+we can use the command <code>fclDumpProfileData</code> with our profiler object to extract and display profiling results.</p>
+<p><strong>Interface:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclDumpProfileData</span><span class="p">(</span><span class="o">&lt;</span><span class="n">fclProfiler</span><span class="o">&gt;</span><span class="p">,</span><span class="n">outputUnit</span><span class="o">=&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>
+<p>The first argument is the profiler object for which we wish to print out data for.</p>
+</li>
+<li>
+<p><code>outputUnit</code> is an <strong>optional</strong> integer argument to specify an open file unit to which to print
+profiling data summary. If omitted then <code>stdout</code> is used and data is printed to the screen.</p>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclProfiler</span><span class="p">)</span> <span class="kd">::</span> <span class="n">profiler</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclWait</span><span class="p">()</span>
+<span class="k">call </span><span class="n">fclDumpProfileData</span><span class="p">(</span><span class="n">profiler</span><span class="p">)</span>
+</code></pre></div>
+<p>The following is an example of output from <code>fclDumpProfileData</code>:</p>
+<div class="highlight"><pre><span></span><code> -----------------------------------------------------------------------------
+        Profile name|  No. of|   T_avg|   T_max|   T_min| Local|Privat|PWGS
+            (Kernel)|  events|    (ns)|    (ns)|    (ns)|  Mem.|  Mem.|
+ -----------------------------------------------------------------------------
+          initialise|       1|  308750|  308750|  308750|     0|     0|  32
+             collide|    5000|  846595| 1527166|  735833|     0|     0|  32
+  boundaryConditions|    5000|  154161|  234083|  131333|     0|     0|  32
+              stream|    5000| 1067590| 1419500|  921000|     0|     0|  32
+           macroVars|      50|  897174| 1104250|  802833|     0|     0|  32
+ -----------------------------------------------------------------------------
+  ns: nanoseconds,  PWGS: Preferred work group size,  Mem: Memory in bytes.
+ -----------------------------------------------------------------------------
+
+
+ -----------------------------------------------------------------------------
+        Profile name|  No. of|    Size|Transfer|   S_avg|   S_max|   S_min
+            (Buffer)|  events|(KBytes)|    mode|  (GB/S)|  (GB/S)|  (GB/S)
+ -----------------------------------------------------------------------------
+               rho_d|      50|     640|   READ | 15.2255| 20.7570|  6.9565
+                 u_d|      50|     640|   READ | 14.3151| 18.7777|  7.3074
+                 v_d|      50|     640|   READ | 11.1791| 15.3909|  6.0425
+           bcFlags_d|       1|     640|   WRITE|  9.3842|  9.3842|  9.3842
+ -----------------------------------------------------------------------------
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fcldumpprofiledata.html">fclDumpProfileData</a></p>
+<h3 id="14-generate-a-chrome-tracing-file">1.4 Generate a chrome tracing file</h3>
+<p>The Google Chrome web browser has a built-in profiler which can
+<a href="https://aras-p.info/blog/2017/01/23/Chrome-Tracing-as-Profiler-Frontend/">load and display</a>
+any arbitrary profiling data as long as it is in the expected
+<a href="https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview">JSON format</a>.</p>
+<p>The <code>fclDumpTracingData</code> routine is provided to generate such JSON files for use
+with chrome tracing.</p>
+<p><strong>Interface:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclDumpTracingData</span><span class="p">(</span><span class="o">&lt;</span><span class="n">fclProfiler</span><span class="o">&gt;</span><span class="p">,</span><span class="n">filename</span><span class="o">=&lt;</span><span class="kt">character</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclProfiler</span><span class="p">)</span> <span class="kd">::</span> <span class="n">profiler</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclWait</span><span class="p">()</span>
+<span class="k">call </span><span class="n">fclDumpTracingData</span><span class="p">(</span><span class="n">profiler</span><span class="p">,</span><span class="s1">&#39;trace.json&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fcldumptracingdata.html">fclDumpTracingData</a></p>
+<h2 id="2-advanced-get-timings-explicitly">2. Advanced: Get timings explicitly</h2>
+<h3 id="21-enable-profiling-without-a-profiler-object">2.1 Enable profiling without a profiler object</h3>
+<p>The <code>fclProfiler</code> type provides a convenient interface for producing aggregate
+profiling information for a collection of kernels and buffers.
+However a profiler object is not required if you want to access profiling data directly.
+To enable profiling on a kernel or buffer directly, use <code>fclEnableProfiling</code>.</p>
+<p><strong>Interfaces:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclEnableProfiling</span><span class="p">(</span><span class="o">&lt;</span><span class="n">fclKernel</span><span class="o">&gt;</span><span class="p">,</span><span class="n">profileSize</span><span class="o">=&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="k">call </span><span class="n">fclEnableProfiling</span><span class="p">(</span><span class="o">&lt;</span><span class="n">fclBuffer</span><span class="o">&gt;</span><span class="p">,</span><span class="n">profileSize</span><span class="o">=&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclKernel</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myKernel</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceFloat</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myBuffer</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclEnableProfiling</span><span class="p">(</span><span class="n">myKernel</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">call </span><span class="n">fclEnableProfiling</span><span class="p">(</span><span class="n">myBuffer</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclenableprofiling.html">fclEnableProfiling</a></p>
+<h3 id="22-extract-event-durations">2.2 Extract event durations</h3>
+<p>To access profiling data directly, use the command <code>fclGetEventDurations</code> and pass in the <code>profileEvents</code> component
+of the kernel or buffer object.
+This will return an integer array where each entry corresponds to the duration in <strong>nanoseconds</strong> of an event in the input array.</p>
+<p><strong>Interface</strong></p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="kt">integer</span><span class="p">(:)</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">fclGetEventDurations</span><span class="p">(</span><span class="n">eventList</span><span class="o">=&lt;</span><span class="n">fclEvent</span><span class="p">(:)</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kt">integer</span><span class="p">,</span> <span class="k">parameter</span> <span class="kd">::</span> <span class="n">Nprofile</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclKernel</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myKernel</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">durations</span><span class="p">(</span><span class="n">Nprofile</span><span class="p">)</span>
+<span class="kt">real</span> <span class="kd">::</span> <span class="n">averageTime</span>
+<span class="p">...</span>
+<span class="n">myKernel</span> <span class="o">=</span> <span class="n">fclGetProgramKernel</span><span class="p">(</span><span class="n">prog</span><span class="p">,</span><span class="n">kernelName</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span><span class="n">profileSize</span><span class="o">=</span><span class="n">Nprofile</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="n">durations</span> <span class="o">=</span> <span class="n">fclGetEventDurations</span><span class="p">(</span><span class="n">myKernel</span><span class="p">%</span><span class="n">profileEvents</span><span class="p">(:))</span>
+<span class="n">averageTime</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="p">)</span><span class="o">/</span><span class="n">Nprofile</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclgeteventdurations.html">fclGetEventDurations</a></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../events/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Events and synchronisation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Events and synchronisation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../errors/" class="md-footer__link md-footer__link--next" aria-label="Next: Errors" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Errors
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

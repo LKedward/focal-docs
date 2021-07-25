@@ -1,0 +1,995 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://lkedward.github.io/focal-docs/setup/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Setup - Focal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#setup" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Focal Documentation" class="md-header__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Focal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Focal Documentation" class="md-nav__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    Focal Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/" class="md-nav__link">
+        Building the Focal Library
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linking/" class="md-nav__link">
+        Linking Focal Programs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Setup
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1a-quick-setup" class="md-nav__link">
+    1a. Quick setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1b-advanced-setup" class="md-nav__link">
+    1b. Advanced setup
+  </a>
+  
+    <nav class="md-nav" aria-label="1b. Advanced setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#querying-platforms" class="md-nav__link">
+    Querying platforms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-context" class="md-nav__link">
+    Create a context
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-default-context" class="md-nav__link">
+    The default context
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-devices-on-the-context" class="md-nav__link">
+    Query devices on the context
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-creating-a-command-queue" class="md-nav__link">
+    2. Creating a command queue
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Creating a command queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-default-command-queue" class="md-nav__link">
+    2.1 The default command queue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-command-queue-pools" class="md-nav__link">
+    2.2 Command queue pools
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory/" class="md-nav__link">
+        Managing memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernels/" class="md-nav__link">
+        Working with kernels
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        Events and synchronisation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiling/" class="md-nav__link">
+        Profiling OpenCL code in Focal
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced/" class="md-nav__link">
+        Advanced topics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://lkedward.github.io/focal" class="md-nav__link">
+        API Reference >
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1a-quick-setup" class="md-nav__link">
+    1a. Quick setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1b-advanced-setup" class="md-nav__link">
+    1b. Advanced setup
+  </a>
+  
+    <nav class="md-nav" aria-label="1b. Advanced setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#querying-platforms" class="md-nav__link">
+    Querying platforms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-context" class="md-nav__link">
+    Create a context
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-default-context" class="md-nav__link">
+    The default context
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-devices-on-the-context" class="md-nav__link">
+    Query devices on the context
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-creating-a-command-queue" class="md-nav__link">
+    2. Creating a command queue
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Creating a command queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-default-command-queue" class="md-nav__link">
+    2.1 The default command queue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-command-queue-pools" class="md-nav__link">
+    2.2 Command queue pools
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="setup">Setup</h1>
+<p>All OpenCL actions occur via contexts, which are containers for related devices, and command queues which are attached to specific devices.
+Each context is associated with a specific platform where a platform generally coincides with a particular vendor.</p>
+<h2 id="1a-quick-setup">1a. Quick setup</h2>
+<p>We can use the <code>fclInit</code> function to quickly select a device based on criteria from all devices available on the system.
+If a device matching the specified criteria is found, then this device is returned as an object and the <strong>default context</strong> is set
+using the platform containing the matching device.</p>
+<p><strong>Interface:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">device</span> <span class="o">=</span> <span class="n">fclInit</span><span class="p">([</span><span class="n">vendor</span><span class="p">],[</span><span class="k">type</span><span class="p">],[</span><span class="n">nameLike</span><span class="p">],[</span><span class="n">extensions</span><span class="p">],[</span><span class="n">sortBy</span><span class="p">])</span>
+</code></pre></div>
+<ul>
+<li>
+<p><code>device</code> (<code>type(fclDevice)</code>): the chosen device returned by the function.</p>
+</li>
+<li>
+<p><code>vendor</code> (<code>character(*)</code>,<code>optional</code>): if specified, look for this (sub)string in the device vendor to filter available devices.</p>
+</li>
+<li>
+<p><code>type</code> (one of <code>'cpu'</code> or <code>'gpu'</code>,<code>optional</code>): if specified, filter available devices based on device type.</p>
+</li>
+<li>
+<p><code>nameLike</code> (<code>character(*)</code>,<code>optional</code>): if specified, look for this (sub)string in the device name to filter available devices.</p>
+</li>
+<li>
+<p><code>extensions</code> (<code>character(*)</code>,<code>optional</code>): if specified, look for these OpenCL extensions (command-separated) to filter available devices; any device that does not support all extensions specified will be filtered out.</p>
+</li>
+<li>
+<p><code>sortBy</code> (one of <code>'core'</code>,<code>'memory'</code>,<code>'clock'</code>, <code>optional</code>): from the filtered list, choose the device with the most compute units or total memory or clock speed.</p>
+</li>
+</ul>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDevice</span><span class="p">)</span> <span class="kd">::</span> <span class="n">device</span>
+<span class="p">...</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">fclInit</span><span class="p">(</span><span class="n">vendor</span><span class="o">=</span><span class="s1">&#39;nvidia,amd&#39;</span><span class="p">,</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">,</span><span class="n">sortBy</span><span class="o">=</span><span class="s1">&#39;cores&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>In this example we have specified any <code>gpu</code> device belonging to vendors <code>nvidia</code> OR <code>amd</code> and to choose the device
+with the most compute units (<code>cores</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>fclInit</code> automatically creates an OpenCL context for the chosen device and uses it to set the <strong>default context</strong>.
+By setting the default context, subsequent Focal API calls can omit the context (<code>'ctx'</code>) argument.</p>
+</div>
+<p>To add more devices from the same vendor, see <code>fclFindDevices</code> below.</p>
+<p><strong><a href="#2-creating-a-command-queue">Jump down to command queues</a> to now create a command queue on your chosen device</strong></p>
+<h2 id="1b-advanced-setup">1b. Advanced setup</h2>
+<h3 id="querying-platforms">Querying platforms</h3>
+<p>OpenCL is able to support multiple different implementations on the same host using a platform model.
+An OpenCL platform is a specific OpenCL implementation; in general, platforms coincide with different hardware vendors.
+For example, if your machine has an Intel CPU and an NVIDIA graphics card both with drivers supporting OpenCL,
+then you will have two platforms available: one each for Intel and NVIDIA.</p>
+<p>We can get a list of platforms using the Focal subroutine <code>fclGetPlatforms()</code>.
+This returns a list of Focal <code>fclPlatform</code> objects:</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclPlatform</span><span class="p">),</span> <span class="k">pointer</span> <span class="kd">::</span> <span class="n">platforms</span><span class="p">(:)</span>
+
+<span class="n">platforms</span> <span class="o">=&gt;</span> <span class="n">fclGetPlatforms</span><span class="p">()</span>
+</code></pre></div>
+<p>The Focal platform object contains fields such as <code>name</code>, <code>vendor</code>, <code>version</code>, and <code>numDevice</code> which we can use
+to select a particular platform.</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/type/fclplatform.html">fclPlatform</a>,
+<a href="https://lkedward.github.io/focal/interface/fclgetplatforms.html">fclGetPlatforms</a>,
+<a href="https://lkedward.github.io/focal/interface/fclgetplatforminfo.html">fclGetPlatformInfo</a></p>
+<h3 id="create-a-context">Create a context</h3>
+<p>We can explicitly create an OpenCL context with a particular platform or vendor using <code>fclCreateContext</code>:</p>
+<p>There are two ways of calling this function, either with a platform object (see <code>fclGetPlatforms()</code> above to query platforms) or with 
+a vendor string to specify the desired vendor:</p>
+<p><strong>Interface:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">ctx</span> <span class="o">=</span> <span class="n">fclCreateContext</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">fclCreateContext</span><span class="p">(</span><span class="n">vendor</span><span class="p">)</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p><code>ctx</code> (<code>type(fclContext)</code>): context object returned.</p>
+</li>
+<li>
+<p><code>platform</code> (<code>type(fclPlatform)</code>): a Focal platform object on which to create the context. </p>
+</li>
+<li>
+<p><code>vendor</code> (<code>character(*)</code>): string or comma-separate list of strings to select a particular device vendor. If multiple vendors are specified, then the first vendor 
+in the list that is found on the system is chosen, <em>i.e.</em> specify vendors in order of preference.</p>
+</li>
+</ul>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclContext</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ctx</span>
+<span class="p">...</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">fclCreateContext</span><span class="p">(</span><span class="s1">&#39;nvidia,intel&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>In this example we create a context with first preference <code>'nvidia'</code> and second preference <code>'intel'</code> as device vendors.</p>
+<h3 id="the-default-context">The default context</h3>
+<p>Once created, the resulting context object (called <code>ctx</code> above) is used in subsequent Focal calls to indicate which context to use.
+If you are only using one context throughout your program, then your code can be simplified by setting the <em>default context</em>.
+This is a global variable which allows Focal calls to omit the context variable.</p>
+<p>In the following examples, we query devices in a context for GPUs; the first example uses an explicit context variable <code>ctx</code> whereas the
+second example calls <code>fclSetDefaultContext</code> and is able to omit the context variable in the call to <code>fclFindDevices</code>.</p>
+<p><strong>Example: with explicit context variable</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclContext</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ctx</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDevice</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">devices</span><span class="p">(:)</span>
+<span class="p">...</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">fclCreateContext</span><span class="p">(</span><span class="n">vendor</span><span class="o">=</span><span class="s1">&#39;nvidia&#39;</span><span class="p">)</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example: with default context</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDevice</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">devices</span><span class="p">(:)</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclSetDefaultContext</span><span class="p">(</span> <span class="n">fclCreateContext</span><span class="p">(</span><span class="n">vendor</span><span class="o">=</span><span class="s1">&#39;nvidia&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/type/fclplatform.html">fclPlatform</a>,
+<a href="https://lkedward.github.io/focal/interface/fclsetdefaultcontext.html">fclSetDefaultContext</a>,
+<a href="https://lkedward.github.io/focal/module/focal.html#variable-fcldefaultctx">fclDefaultCtx</a></p>
+<h3 id="query-devices-on-the-context">Query devices on the context</h3>
+<p>A useful way of querying available devices in a context is provided by the <code>fclFindDevices</code> function which enables us
+to filter the device list based on device type, device name as well as sort the list according to device properties.</p>
+<p><strong>Interface:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="n">ctx</span><span class="p">,[</span><span class="k">type</span><span class="p">],[</span><span class="n">nameLike</span><span class="p">],[</span><span class="n">extensions</span><span class="p">],[</span><span class="n">sortBy</span><span class="p">])</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">([</span><span class="k">type</span><span class="p">],[</span><span class="n">nameLike</span><span class="p">],[</span><span class="n">extensions</span><span class="p">],[</span><span class="n">sortBy</span><span class="p">])</span>
+</code></pre></div></p>
+<p>where arguments <code>type</code>, <code>nameLike</code>, <code>extensions</code>, and <code>sortBy</code> have the same definitions as defined for <code>fclInit</code> above.</p>
+<ul>
+<li>
+<p><code>devices</code> (<code>type(fclDevice)</code>, <code>allocatable</code>): an array of devices allocated on assignment.</p>
+</li>
+<li>
+<p><code>ctx</code> (<code>type(fclContext)</code>, <code>optional</code>): the context from which to query available devices. The <strong>default context</strong> is used if this argument is omitted.</p>
+</li>
+</ul>
+<p><strong>Example:</strong>
+List CPUs in context <code>ctx</code> sorted (descending) by number of cores:</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclContext</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ctx</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDevice</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">devices</span><span class="p">(:)</span>
+<span class="p">...</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">,</span><span class="n">sortBy</span><span class="o">=</span><span class="s1">&#39;cores&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+List GPUs in the default context where the name contains 'tesla' (case insensitive):</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fcLDevice</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">devices</span><span class="p">(:)</span>
+<span class="p">...</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">fclFindDevices</span><span class="p">(</span><span class="k">type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">,</span><span class="n">nameLike</span><span class="o">=</span><span class="s1">&#39;tesla&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>From this list we can choose the first one or more devices as required.</p>
+<p>We can further query device properties using <code>fclGetDeviceInfo</code> (this requires inclusion of the <code>clfortran</code> module which defines values for the property <code>key</code> argument).</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclfinddevices.html">fclFindDevices</a>,
+<a href="https://lkedward.github.io/focal/interface/fclgetdeviceinfo.html">fclGetDeviceInfo</a>
+<a href="https://lkedward.github.io/focal/type/fcldevice.html">fclDevice</a></p>
+<h2 id="2-creating-a-command-queue">2. Creating a command queue</h2>
+<p>Once a context created, and a device selected (see above) we can create an OpenCL command queue; all device actions are submitted via command queues.
+Command queues are associated with individual devices where one device can have multiple command queues (but not vice versa).
+Command queues are created using the <code>fclCreateCommandQ</code> function.</p>
+<p><strong>Interface</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">cmdq</span> <span class="o">=</span> <span class="n">fclCreateCommandQ</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="n">device</span><span class="p">,[</span><span class="n">enableProfiling</span><span class="p">],[</span><span class="n">outOfOrderExec</span><span class="p">],</span> <span class="p">&amp;</span>
+                           <span class="p">[</span><span class="n">blockingRead</span><span class="p">],</span> <span class="p">[</span><span class="n">blockingWrite</span><span class="p">])</span>
+<span class="n">cmdq</span> <span class="o">=</span> <span class="n">fclCreateCommandQ</span><span class="p">(</span><span class="n">device</span><span class="p">,[</span><span class="n">enableProfiling</span><span class="p">],[</span><span class="n">outOfOrderExec</span><span class="p">],</span> <span class="p">&amp;</span>
+                           <span class="p">[</span><span class="n">blockingRead</span><span class="p">],</span> <span class="p">[</span><span class="n">blockingWrite</span><span class="p">])</span>
+</code></pre></div>
+<ul>
+<li>
+<p><code>cmdq</code> (<code>type(fclCommandQ)</code>): the created command queue object</p>
+</li>
+<li>
+<p><code>ctx</code> (<code>type(fclContext)</code>,<code>optional</code>), the context associated with <code>device</code>. If no context is specified, then the default context is used.</p>
+</li>
+<li>
+<p><code>device</code> (<code>type(fclDevice)</code>): the device on which to create the command queue.</p>
+</li>
+<li>
+<p><code>enableProfiling</code> (<code>logical</code>,<code>optional</code>): whether to enable event profiling on this command queue, default <code>.false.</code></p>
+</li>
+<li>
+<p><code>outOfOrderExec</code> (<code>logical</code>,<code>optional</code>): whether to enable out-of-order execution on this command queue, default <code>.false.</code></p>
+</li>
+<li>
+<p><code>blockingRead</code> (<code>logical</code>,<code>optional</code>): whether memory read operations are host-blocking on this command queue, default <code>.true.</code></p>
+</li>
+<li>
+<p><code>blockingWRite</code> (<code>logical</code>,<code>optional</code>): whether memory write operations are host-blocking on this command queue, default <code>.true.</code></p>
+</li>
+</ul>
+<p><strong>Example:</strong>
+Create command queue on first device in <code>devices</code> list with profiling enabled.</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclCommandQ</span><span class="p">)</span> <span class="kd">::</span> <span class="n">cmdq</span>
+<span class="p">...</span>
+<span class="n">cmdq</span> <span class="o">=</span> <span class="n">fclCreateCommandQ</span><span class="p">(</span><span class="n">devices</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">enableProfiling</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclcreatecommandq.html">fclCreateCommandQ</a>,
+<a href="https://lkedward.github.io/focal/type/fclcommandq.html">fclCommandQ</a></p>
+<h3 id="21-the-default-command-queue">2.1 The default command queue</h3>
+<p>Once created, the resulting command queue object (called <code>cmdq</code> above) is used in subsequent Focal calls to indicate which device to use.
+In a similar way to the default context, a <em>default command queue</em> is provided to allow subsequent focal calls to omit the command queue object.
+This is useful if you are only using one command queue throughout your program.</p>
+<p><strong>Example</strong>
+Set the default command queue on first device in <code>devices</code> list.
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclSetDefaultCommandQ</span><span class="p">(</span> <span class="n">fclCreateCommandQ</span><span class="p">(</span><span class="n">devices</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span>
+</code></pre></div></p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclsetdefaultcommandq.html">fclSetDefaultCommandQ</a>,
+<a href="https://lkedward.github.io/focal/module/focal.html#variable-fcldefaultcmdq">fclDefaultCommandQ</a></p>
+<h3 id="22-command-queue-pools">2.2 Command queue pools</h3>
+<p>Many devices support multiple harware queues which allow different kernel and memory operations to be processed
+concurrently; this is particularly important when wanting to overlap memory transfers with compute operations or when individual
+compute kernels do not fully utilise the device compute units.</p>
+<p>OpenCL allows multiple command queues to be created for a single device; if the device supports multiple hardware queues, then the OpenCL 
+command queues will map in some way to the available hardware queues. If not supported then the command queue work will be serialised on the device</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use the <a href="../profiling/#14-generate-a-chrome-tracing-file">tracing</a> functionality to visually check for kernel/memory runtime concurrency.</p>
+</div>
+<p>Focal provides a <code>fclCommandQPool</code> type which performs simple round-robin scheduling across multiple command queues.
+To create a command queue pool we can use the <code>fclCreateCommandQPool</code> command which accepts the same arguments are <code>fcCreateCommandQ</code> in 
+addition to an argument <code>N</code> specifying the number of command queues to create.</p>
+<p><strong>Interface</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">cmdq</span> <span class="o">=</span> <span class="n">fclCreateCommandQPool</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">device</span><span class="p">,[</span><span class="n">enableProfiling</span><span class="p">],[</span><span class="n">outOfOrderExec</span><span class="p">],</span> <span class="p">&amp;</span>
+                           <span class="p">[</span><span class="n">blockingRead</span><span class="p">],</span> <span class="p">[</span><span class="n">blockingWrite</span><span class="p">])</span>
+<span class="n">cmdq</span> <span class="o">=</span> <span class="n">fclCreateCommandQPool</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">device</span><span class="p">,[</span><span class="n">enableProfiling</span><span class="p">],[</span><span class="n">outOfOrderExec</span><span class="p">],</span> <span class="p">&amp;</span>
+</code></pre></div>
+<ul>
+<li><code>N</code> (<code>integer</code>): number of command queues to create within command queue pool.</li>
+</ul>
+<p>Once created we can use the methods <code>next()</code> and <code>current()</code> to return the next scheduled or currently selected command queues respectively.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclCommandQPool</span><span class="p">)</span> <span class="kd">::</span> <span class="n">qPool</span>
+<span class="p">...</span>
+<span class="n">qPool</span> <span class="o">=</span> <span class="n">fclCreateCommandQPool</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">device</span><span class="p">)</span>
+
+<span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span>
+  <span class="n">kernel1</span><span class="p">%</span><span class="n">launch</span><span class="p">(</span><span class="n">qPool</span><span class="p">%</span><span class="n">next</span><span class="p">(),</span><span class="k">data</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+  <span class="n">kernel2</span><span class="p">%</span><span class="n">launch</span><span class="p">(</span><span class="n">qPool</span><span class="p">%</span><span class="n">current</span><span class="p">(),</span><span class="k">data</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="k">end do</span>
+</code></pre></div>
+<p>In this example we launch two sequential kernels three times on three different command queues for three different 
+sets of data. Note that the second kernel launches on the same queue as the first kernel and will hence be launched in
+sequence, but each iteration of the do loop increments the current queue using the <code>next()</code> method.</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclcreatecommandqpool.html">fclCreateCommandQPool</a>,
+<a href="https://lkedward.github.io/focal/type/fclcommandqpool.html">fclCommandQPool</a></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quickstart Guide" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Quickstart Guide
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../memory/" class="md-footer__link md-footer__link--next" aria-label="Next: Managing memory" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Managing memory
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

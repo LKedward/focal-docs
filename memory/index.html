@@ -1,0 +1,866 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://lkedward.github.io/focal-docs/memory/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Managing memory - Focal Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#managing-memory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Focal Documentation" class="md-header__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Focal Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Managing memory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Focal Documentation" class="md-nav__button md-logo" aria-label="Focal Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6V9z"/></svg>
+
+    </a>
+    Focal Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/LKedward/focal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/" class="md-nav__link">
+        Building the Focal Library
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linking/" class="md-nav__link">
+        Linking Focal Programs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Managing memory
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Managing memory
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-initialise-device-memory" class="md-nav__link">
+    1. Initialise device memory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fill-device-buffer-with-scalar" class="md-nav__link">
+    2. Fill device buffer with scalar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-transfer-between-device-and-host" class="md-nav__link">
+    3. Data transfer between device and host
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transfer-device-array-to-device-array" class="md-nav__link">
+    4. Transfer device array to device array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-swap-buffer-pointers" class="md-nav__link">
+    5. Swap buffer pointers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-free-device-memory" class="md-nav__link">
+    6. Free device memory
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kernels/" class="md-nav__link">
+        Working with kernels
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        Events and synchronisation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiling/" class="md-nav__link">
+        Profiling OpenCL code in Focal
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced/" class="md-nav__link">
+        Advanced topics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://lkedward.github.io/focal" class="md-nav__link">
+        API Reference >
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-initialise-device-memory" class="md-nav__link">
+    1. Initialise device memory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fill-device-buffer-with-scalar" class="md-nav__link">
+    2. Fill device buffer with scalar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-transfer-between-device-and-host" class="md-nav__link">
+    3. Data transfer between device and host
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transfer-device-array-to-device-array" class="md-nav__link">
+    4. Transfer device array to device array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-swap-buffer-pointers" class="md-nav__link">
+    5. Swap buffer pointers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-free-device-memory" class="md-nav__link">
+    6. Free device memory
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="managing-memory">Managing memory</h1>
+<p>See <a href="../setup">setup</a> first for how to define a context and create a device command queue.</p>
+<p><strong>See also in <a href="../advanced">advanced topics</a>:</strong></p>
+<ul>
+<li><a href="../advanced#1-sub-buffers">Sub-buffers</a></li>
+<li><a href="../advanced#2-pinned-host-memory">Pinned host memory</a></li>
+</ul>
+<h2 id="1-initialise-device-memory">1. Initialise device memory</h2>
+<p>Initialisation of device memory requires a dimension (number of elements) and logicaleans indicating the read/write access of kernels.
+A command queue may optionally be specified, if omitted the the default command queue is used (<code>fclDefaultCommandQ</code>).</p>
+<p><strong>Interfaces</strong>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">([</span><span class="n">cmdQ</span><span class="p">],</span><span class="n">untypedBuffer</span><span class="p">,</span><span class="n">nBytes</span><span class="p">,[</span><span class="n">profileName</span><span class="p">],[</span><span class="nb">access</span><span class="p">])</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">([</span><span class="n">cmdQ</span><span class="p">],</span><span class="n">typedBuffer</span><span class="p">,</span><span class="nb">dim</span><span class="p">,[</span><span class="n">profileName</span><span class="p">],[</span><span class="nb">access</span><span class="p">])</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p><code>cmdQ</code> (<em>optional</em>) specifies the command queue to which this buffer is associated.
+All buffer operations will occur on this command queue. <code>cmdQ</code> can be omitted if the default command queue has been set.</p>
+</li>
+<li>
+<p><code>untypedBuffer</code> (<code>type(fclDeviceBuffer)</code>) is a general buffer object with no associated type information.</p>
+</li>
+<li>
+<p><code>typedBuffer</code> can be one of <code>type(fclDeviceInt32)</code>, <code>type(fclDeviceFloat)</code>, <code>type(fclDeviceDouble)</code>.</p>
+</li>
+<li>
+<p><code>nBytes</code> (<code>integer</code>): number of bytes to allocated for an untyped buffer object.</p>
+</li>
+<li>
+<p><code>dim</code> (<code>integer</code>): number of elements for which to allocate the typed buffer.</p>
+</li>
+<li>
+<p><code>profileName</code> (<code>character(*)</code>, <code>optional</code>): descriptive name for printing profiling information. See <a href="../profiling">profiling</a>.</p>
+</li>
+<li>
+<p><code>access</code> (one of <code>'r'</code>, <code>'w'</code>, <code>'rw'</code>, <code>optional</code>): kernel read/write access to buffer, default <code>'rw'</code>.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All buffer operations are submitted to the command queue specified at buffer initialisation. To change the command
+queue associated with a buffer use the syntax: <code>buffer%cmdq =&gt; newCmdQ</code>.</p>
+</div>
+<p><strong>Example:</strong>
+read-only integer buffer with 1000 elements</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">array_d</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">array_d</span><span class="p">,</span><span class="nb">dim</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="nb">access</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+</code></pre></div>
+No command queue is specified, so the default command queue is used (<code>fclDefaultCmdQ</code>) which is assumed to have been initialised.
+'Read only' in this context means that OpenCL kernels cannot write to this buffer.</p>
+<p><strong>Example:</strong>
+read-write double precision buffer with command queue</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDeviceDouble</span><span class="p">)</span> <span class="kd">::</span> <span class="n">array_d</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclCmdQ</span><span class="p">)</span> <span class="kd">::</span> <span class="n">cmdq</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">cmdq</span><span class="p">,</span><span class="n">array_d</span><span class="p">,</span><span class="nb">dim</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">profileName</span><span class="o">=</span><span class="s1">&#39;array_d&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclinitbuffer.html">fclInitBuffer</a>,
+<a href="https://lkedward.github.io/focal/type/fcldevicebuffer.html">fclDeviceBuffer</a>,
+<a href="https://lkedward.github.io/focal/type/fcldeviceint32.html">fclDeviceInt32</a>,
+<a href="https://lkedward.github.io/focal/type/fcldevicefloat.html">fclDeviceFloat</a>,
+<a href="https://lkedward.github.io/focal/type/fcldevicedouble.html">fclDeviceDouble</a></p>
+<h2 id="2-fill-device-buffer-with-scalar">2. Fill device buffer with scalar</h2>
+<p>The assignment <code>=</code> operator can be used to fill an initialised device buffer with a scalar value.</p>
+<p><strong>Example</strong>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDeviceFloat</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceFloat</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDevicDouble</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceDouble</span>
+<span class="p">...</span>
+<span class="c">! Initialise device arrays</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceFloat</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceDouble</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+
+<span class="c">! Fill arrays with zeros</span>
+<span class="n">deviceFloat</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">deviceDouble</span> <span class="o">=</span> <span class="mf">0.0d0</span>
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since filling an array with a scalar value does not involve a host array pointer, it is <strong>non-blocking</strong>.
+The scalar assignment is enqueued onto the command queue and host code continues. Call <code>fclWait(cmdq%lastWriteEvent)</code> to wait.</p>
+</div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/assignment%28%3D%29.html">Assignment(=)</a></p>
+<h2 id="3-data-transfer-between-device-and-host">3. Data transfer between device and host</h2>
+<p>Data transfer between a device buffer and a host array can be achieved using the assignment <code>=</code> operation.
+When transferring data, the host and device arrays must be of compatible types.</p>
+<p><strong>Example</strong>:
+transfer from host to device</p>
+<div class="highlight"><pre><span></span><code><span class="kt">real</span><span class="p">(</span><span class="n">real32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">hostArray</span><span class="p">(</span><span class="n">Nelem</span><span class="p">)</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceFloat</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray</span>
+<span class="p">...</span>
+<span class="c">! Initialise device array</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceArray</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+
+<span class="c">! Copy to device from host</span>
+<span class="n">deviceArray</span> <span class="o">=</span> <span class="n">hostArray</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since transferring arrays involves a host array pointer, it is <strong>blocking</strong> by default.
+Host code does not continue until transfer completes. Set <a href="../setup#2-creating-a-command-queue">command queue</a> <code>blockingWrite</code> and <code>blockingRead</code> to <code>.false.</code> for asynchronous transfers.</p>
+</div>
+<p><strong>Example: Non-blocking data transfer</strong></p>
+<p>To perform non-blocking transfer, we set the command queue parameter variables <code>blockingWrite</code> and <code>blockingRead</code> to <code>.false.</code> as required.
+To keep track of the transfer operations we can use the command queue variables <code>lastWriteEvent</code> and <code>lastReadEvent</code> or the global variables <code>fclLastWriteEvent</code> and <code>fclLastReadEvent</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclEvent</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+<span class="p">...</span>
+<span class="n">cmdq</span><span class="p">%</span><span class="n">blockingWrite</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>    <span class="c">! Enable non-blocking host-to-device transfers</span>
+<span class="n">deviceArray</span> <span class="o">=</span> <span class="n">hostArray</span>         <span class="c">! Enqueue the transfer command</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">cmdq</span><span class="p">%</span><span class="n">lastWriteEvent</span>         <span class="c">! Get transfer event object</span>
+<span class="p">...</span>
+<span class="k">call </span><span class="n">fclWait</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>                 <span class="c">! Wait for event when needed</span>
+</code></pre></div>
+<p>If using the default command queue then replace <code>cmdq</code> with <code>fclDefaultCmdQ</code>.</p>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/assignment%28%3D%29.html">Assignment(=)</a>,
+<a href="https://lkedward.github.io/focal/type/fclcommandq.html">fclCommandQ</a>,
+<a href="https://lkedward.github.io/focal/interface/fclwait.html">fclWait</a></p>
+<h2 id="4-transfer-device-array-to-device-array">4. Transfer device array to device array</h2>
+<p>Device arrays and device array pointers can also be copied using the assignment <code>=</code> operator.</p>
+<p>If both the source object (right value) and target object (left value) are valid initialised device array objects,
+then the assignment operation will enqueue a <strong>non-blocking</strong> device-to-device transfer.
+This event can be waited upon by the host using <code>fclWait(cmdq%lastCopyEvent)</code>.</p>
+<p>If the target object (left value) is not initialised then the assignment operation will copy the pointer from the initialised source object (right value)
+such that both objects refer to the same device array.</p>
+<p>If the source object (right value) is not initialised then the assignment operation is invalid and will result in a runtime error.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray1</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray2</span>
+<span class="p">...</span>
+<span class="c">! Initialise device array 1</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceArray1</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+
+<span class="n">deviceArray2</span> <span class="o">=</span> <span class="n">deviceArray1</span>
+<span class="c">! deviceArray2 and deviceArray1 now reference the same device buffer</span>
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray1</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceInt32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">deviceArray2</span>
+<span class="p">...</span>
+<span class="c">! Initialise both device arrays</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceArray1</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+<span class="k">call </span><span class="n">fclInitBuffer</span><span class="p">(</span><span class="n">deviceArray2</span><span class="p">,</span><span class="n">Nelem</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="n">deviceArray2</span> <span class="o">=</span> <span class="n">deviceArray1</span>
+<span class="k">call </span><span class="n">fclWait</span><span class="p">(</span><span class="n">fclLastCopyEvent</span><span class="p">)</span>
+<span class="c">! Contents of deviceArray1 copied to deviceArray2</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/assignment%28%3D%29.html">Assignment(=)</a>,
+<a href="https://lkedward.github.io/focal/type/fclcommandq.html">fclCommandQ</a>,
+<a href="https://lkedward.github.io/focal/interface/fclwait.html">fclWait</a></p>
+<h2 id="5-swap-buffer-pointers">5. Swap buffer pointers</h2>
+<p>Device buffer pointers can be swapped on the host using <code>fclBufferSwap</code>.
+This can be more efficient than performing a device-to-device copy.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclKernel</span><span class="p">)</span> <span class="kd">::</span> <span class="n">myKernel</span>
+<span class="k">type</span><span class="p">(</span><span class="n">fclDeviceFloat</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a1_d</span><span class="p">,</span> <span class="n">a2_d</span>
+<span class="p">...</span>
+<span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span>
+  <span class="k">call </span><span class="n">myKernel</span><span class="p">%</span><span class="n">launch</span><span class="p">(</span><span class="n">a1_d</span><span class="p">)</span>
+  <span class="p">...</span>
+  <span class="k">call </span><span class="n">fclBufferSwap</span><span class="p">(</span><span class="n">a1_d</span><span class="p">,</span><span class="n">a2_d</span><span class="p">)</span>
+<span class="k">end do</span>
+</code></pre></div>
+<h2 id="6-free-device-memory">6. Free device memory</h2>
+<p>Device memory is released using <code>fclFreeBuffer</code>.</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">call </span><span class="n">fclFreeBuffer</span><span class="p">(</span><span class="n">deviceArray</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>API ref:</strong>
+<a href="https://lkedward.github.io/focal/interface/fclfreebuffer.html">fclFreeBuffer</a></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Setup
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../kernels/" class="md-footer__link md-footer__link--next" aria-label="Next: Working with kernels" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Working with kernels
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
