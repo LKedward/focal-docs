@@ -22,13 +22,13 @@ call fclInitBuffer([cmdQ],typedBuffer,dim,[profileName],[access])
 - `cmdQ` (*optional*) specifies the command queue to which this buffer is associated.
 All buffer operations will occur on this command queue. `cmdQ` can be omitted if the default command queue has been set.
 
-- `untypedBuffer` (`type(fclDeviceBuffer)`) is a general buffer object with no associated type information
+- `untypedBuffer` (`type(fclDeviceBuffer)`) is a general buffer object with no associated type information.
 
-- `typedBuffer` can be one of `type(fclDeviceInt32)`, `type(fclDeviceFloat)`, `type(fclDeviceDouble)`
+- `typedBuffer` can be one of `type(fclDeviceInt32)`, `type(fclDeviceFloat)`, `type(fclDeviceDouble)`.
 
-- `nBytes` (`integer`): number of bytes to allocated for an untyped buffer object
+- `nBytes` (`integer`): number of bytes to allocated for an untyped buffer object.
 
-- `dim` (`integer`): number of elements for which to allocate the typed buffer
+- `dim` (`integer`): number of elements for which to allocate the typed buffer.
 
 - `profileName` (`character(*)`, `optional`): descriptive name for printing profiling information. See [profiling](../profiling).
 

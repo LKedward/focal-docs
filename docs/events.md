@@ -175,7 +175,7 @@ __API ref:__
 
 ### 3.2 Command queue barriers
 
-OpenCL barriers break up the command queue into regions between which there can be no re-orderig of operations.
+OpenCL barriers break up the command queue into regions between which there can be no re-ordering of operations.
 If a series of operations (group A) is followed by a barrier then followed by another series of operations (group A), then all events from group a must be complete (in any order) before any event in group B can start.
 
 To enqueue a barrier in Focal, use `fclBarrier`:

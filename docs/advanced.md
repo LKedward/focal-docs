@@ -16,17 +16,17 @@ call fclInitSubBuffer([cmdQ],typedSubBuffer,sourceBuffer,start,length, &
 - `cmdQ` (*optional*) specifies the command queue to which this buffer is associated.
 All buffer operations will occur on this command queue. `cmdQ` can be omitted if the default command queue has been set.
 
-- `untypedSubBuffer` (`type(fclDeviceBuffer)`) is a general buffer object with no associated type information
+- `untypedSubBuffer` (`type(fclDeviceBuffer)`): a general buffer object with no associated type information.
 
-- `typedSubBuffer` can be one of `type(fclDeviceInt32)`, `type(fclDeviceFloat)`, `type(fclDeviceDouble)`
+- `typedSubBuffer`: can be one of `type(fclDeviceInt32)`, `type(fclDeviceFloat)`, `type(fclDeviceDouble)`.
 
-- `offset` (`integer`) is the zero-based byte offset within the source buffer at which the sub-buffer starts
+- `offset` (`integer`): the zero-based byte offset within the source buffer at which the sub-buffer starts.
 
-- `size` (`integer`) is the size in bytes of the sub-buffer
+- `size` (`integer`): the size in bytes of the sub-buffer.
 
-- `start` (`integer`) is the zero-based element offset within the source buffer at which the sub-buffer starts
+- `start` (`integer`): the zero-based element offset within the source buffer at which the sub-buffer starts.
 
-- `length` (`integer`): number of elements in the sub-buffer
+- `length` (`integer`): the number of elements in the sub-buffer.
 
 - `profileName` (`character(*)`, `optional`): descriptive name for printing profiling information. See [profiling](../profiling).
 
@@ -55,7 +55,7 @@ since it is guaranteed not to have been '*paged-out*' by the host operating syst
 Pinned memory therefore allows for both faster host-device transfers as well as being __required for asynchronous transfers__.
 
 Pinned memory is implemented in OpenCL using the [clEnqueueMapBuffer](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clEnqueueMapBuffer.html) command
-which maps an region of allocated '*host accessible*' memory to the host address space and returns a pointer to the host address.
+which maps a region of allocated '*host accessible*' memory to the host address space and returns a pointer to the host address.
 
 ### 2.1 Allocate pinned memory
 
