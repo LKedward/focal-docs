@@ -19,7 +19,7 @@ In this example we have specified any `gpu` device belonging to vendors `nvidia`
 with the most compute units (`cores`).
 
 We can alternatively sort devices by total global memory (`sortBy='memory'`) or by maximum clock speed (`sortBy='clock'`).
-Additional filter fields that can be used are: `extensions` to filter based on supported OpenCL extensions;
+Additional filter fields which can be used are: `extensions` to filter based on supported OpenCL extensions;
 and `nameLike` to filter based on the name of the device.
 
 
@@ -36,7 +36,7 @@ platform and returns an `fclDevice` object on which we can create command queues
 See [User guide/Setup](../setup/) for more detail on querying available platforms and devices with Focal and advanced methods for setting up OpenCL contexts and using multiple devices.
 
 ## 2. Create a command queue
-Once we have an `fclDevice` object for our chosen device, we can create a command queue on it which will be used to issue operations to device:
+Once we have an `fclDevice` object for our chosen device, we can create a command queue on it which will be used to issue operations to the device:
 
 ```fortran
 type(fclDevice) :: device
@@ -46,7 +46,7 @@ cmdq = fclCreateCommandQ(device)
 ```
 
 The resulting command queue object `cmdq` can be passed to subsequent commands to specify which command queue to use.
-However a common command queue called the __default command queue__ exists within Focal which when set allows you to omit
+However, a common command queue called the __default command queue__ exists within Focal which when set allows you to omit
 the command queue object in subsequent Focal commands.
 
 To create a command queue and set as the default command queue:

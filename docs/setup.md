@@ -16,13 +16,13 @@ __Interface:__
 device = fclInit([vendor],[type],[nameLike],[extensions],[sortBy])
 ```
 
-* `device` (`type(fclDevice)`): the chosen device returned by the function
+* `device` (`type(fclDevice)`): the chosen device returned by the function.
 
-* `vendor` (`character(*)`,`optional`): if specified, look for this (sub)string in device vendor to filter available devices.
+* `vendor` (`character(*)`,`optional`): if specified, look for this (sub)string in the device vendor to filter available devices.
 
 * `type` (one of `'cpu'` or `'gpu'`,`optional`): if specified, filter available devices based on device type.
 
-* `nameLike` (`character(*)`,`optional`): if specified, look for this (sub)string in device name to filter available devices.
+* `nameLike` (`character(*)`,`optional`): if specified, look for this (sub)string in the device name to filter available devices.
 
 * `extensions` (`character(*)`,`optional`): if specified, look for these OpenCL extensions (command-separated) to filter available devices; any device that does not support all extensions specified will be filtered out.
 
@@ -87,7 +87,7 @@ ctx = fclCreateContext(platform)
 ctx = fclCreateContext(vendor)
 ```
 
-* `ctx` (`type(fclContext)`): context object returned
+* `ctx` (`type(fclContext)`): context object returned.
 
 * `platform` (`type(fclPlatform)`): a Focal platform object on which to create the context. 
 
