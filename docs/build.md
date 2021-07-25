@@ -42,7 +42,7 @@ To use in your own makefile:
 1. Define the make variable `FOCAL_DIR` as the path to the Focal root directory
 2. Include the sub-makefile into your project makefile (after the `all` recipe)
 3. Create a dependency of your objects on `$(FOCAL_LIB_OBJS)`
-4. Add `-I$(FOCAL_DIR)/mod/` to your fortran compile flags
+4. Add `-I$(FOCAL_DIR)/mod/` to your Fortran compile flags
 5. Add `-L$(FOCAL_DIR)/lib/ -lFocal -lOpenCL` to your linker flags
 
 See [linking](../linking) for how to link against the Focal library.

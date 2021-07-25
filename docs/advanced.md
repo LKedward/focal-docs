@@ -78,7 +78,7 @@ As usual, when `cmdQ` is not specified the default command queue is assumed.
 * `integer, pointer, dimension(:)`
 
 where `sp` and `dp` refer to single precision and double precision kinds respectively.
-Note that once allocated, `ptr` can be treated as any other `allocatable` fortran array except that it cannot be deallocated using `deallocate`.
+Note that once allocated, `ptr` can be treated as any other `allocatable` Fortran array except that it cannot be deallocated using `deallocate`.
 
 `dim` is the number of elements for which to allocate space for.
 

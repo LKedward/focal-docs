@@ -44,7 +44,7 @@ __Prerequisites:__
 
 
 ## Quick example
-The following fortran program calculates the sum of two large arrays using an OpenCL kernel.
+The following Fortran program calculates the sum of two large arrays using an OpenCL kernel.
 
 ```fortran
 program sum
